@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مذاكرتي | Study Planner</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #2c9c69;
+            --secondary: #4a90e2;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --bg: #f4f7fa;
+            --card: #ffffff;
+            --text: #333;
+            --radius: 12px;
+            --shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* شريط التنقل */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--card);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            padding: 8px 20px;
+            border: none;
+            background: transparent;
+            color: var(--text);
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .lang-btn {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1001;
+            padding: 8px 16px;
+            border: none;
+            background: var(--secondary);
+            color: #fff;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        header {
+            text-align: center;
+            padding: 80px 20px 30px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 15px;
+            flex: 1;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .card {
+            background: var(--card);
+            margin: 20px 0;
+            padding: 25px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .card h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--bg);
+            padding-bottom: 10px;
+        }
+
+        /* إحصائيات */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: var(--radius);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* الجدول */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        td input, td textarea {
+            width: 100%;
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        td textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .btn {
+            cursor: pointer;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            font-size: 14px;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #248a5a;
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: #3a7bc8;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: #fff;
+        }
+
+        .quote-box {
+            text-align: center;
+            background: linear-gradient(135deg, #e8f5e9 0%, #e3f2fd 100%);
+            border-right: 4px solid var(--primary);
+        }
+
+        #motivQuote {
+            font-size: 1.3rem;
+            color: var(--primary);
+            font-weight: bold;
+            line-height: 1.8;
+        }
+
+        /* التايمر */
+        .timer-box {
+            text-align: center;
+        }
+
+        .timer-display {
+            font-size: 4rem;
+            margin: 20px 0;
+            color: var(--primary);
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .timer-progress {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .timer-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 1s linear;
+        }
+
+        .timer-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .timer-buttons .btn {
+            flex: 1;
+            min-width: 150px;
+            max-width: 200px;
+        }
+
+        /* المفكرة */
+        .notes-container {
+            display: grid;
+            gap: 15px;
+        }
+
+        .note-card {
+            background: #fffef0;
+            border: 1px solid #f0e6b6;
+            border-radius: var(--radius);
+            padding: 15px;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .note-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .note-date {
+            font-size: 0.8rem;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        .note-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .note-delete {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .note-input {
+            width: 100%;
+            min-height: 100px;
+            border: 2px solid var(--primary);
+            border-radius: var(--radius);
+            padding: 15px;
+            font-size: 1rem;
+            resize: vertical;
+            margin-bottom: 10px;
+        }
+
+        .note-color-picker {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .color-option.selected {
+            border-color: var(--text);
+            transform: scale(1.2);
+        }
+
+        /* الإشعارات */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            animation: slideIn 0.5s;
+            z-index: 1000;
+            max-width: 300px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: var(--card);
+            color: #666;
+            margin-top: 20px;
+            box-shadow: 0 -2px 8px rgba(0,0,0,.05);
+        }
+
+        footer p {
+            font-size: 0.9rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        /* الوضع الليلي */
+        body.dark-mode {
+            --bg: #1a1a2e;
+            --card: #16213e;
+            --text: #eaeaea;
+        }
+
+        body.dark-mode .quote-box {
+            background: linear-gradient(135deg, #1e3c2f 0%, #1e3c5a 100%);
+        }
+
+        body.dark-mode .note-card {
+            background: #0f3460;
+            border-color: #1a1a2e;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .timer-display {
+                font-size: 2.5rem;
+            }
+            
+            .timer-buttons .btn {
+                min-width: 100%;
+            }
+            
+            th, td {
+                padding: 8px;
+                font-size: 12px;
+            }
+
+            .nav-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <button class="nav-btn active" onclick="showPage('home')" data-ar="الرئيسية" data-en="Home">الرئيسية</button>
+        <button class="nav-btn" onclick="showPage('timer')" data-ar="المؤقت" data-en="Timer">المؤقت</button>
+        <button class="nav-btn" onclick="showPage('notes')" data-ar="المفكرة 📝" data-en="Notes 📝">المفكرة 📝</button>
+    </nav>
+
+    <!-- زر تبديل اللغة -->
+    <button id="langToggle" class="lang-btn">EN</button>
+
+    <!-- رأس الصفحة -->
+    <header>
+        <h1 data-ar="مذاكرتي" data-en="My Study">مذاكرتي</h1>
+        <p data-ar="خطّط ليومك، وحقّق هدفك!" data-en="Plan your day, reach your goal!">خطّط ليومك، وحقّق هدفك!</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- ========== الصفحة الرئيسية ========== -->
+        <div id="home" class="page active">
+            
+            <!-- إحصائيات -->
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-number" id="totalSubjects">0</div>
+                    <div class="stat-label" data-ar="مواد اليوم" data-en="Today's Subjects">مواد اليوم</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="totalNotes">0</div>
+                    <div class="stat-label" data-ar="ملاحظاتك" data-en="Your Notes">ملاحظاتك</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="studyStreak">1</div>
+                    <div class="stat-label" data-ar="أيام الاستمرارية" data-en="Day Streak">أيام الاستمرارية</div>
+                </div>
+            </div>
+
+            <!-- جدول المذاكرة -->
+            <section class="card">
+                <h2 data-ar="جدول المذاكرة اليومي" data-en="Daily Study Schedule">جدول المذاكرة اليومي</h2>
+                <div style="overflow-x: auto;">
+                    <table id="scheduleTable">
+                        <thead>
+                            <tr>
+                                <th data-ar="المادة" data-en="Subject">المادة</th>
+                                <th data-ar="الوقت" data-en="Time">الوقت</th>
+                                <th data-ar="الملاحظات" data-en="Notes">الملاحظات</th>
+                                <th data-ar="حذف" data-en="Delete">حذف</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                    <div id="emptyState" class="empty-state hidden" data-ar="لا توجد مواد مضافة بعد" data-en="No subjects added yet">
+                        لا توجد مواد مضافة بعد
+                    </div>
+                </div>
+                <button id="addRowBtn" class="btn btn-primary" data-ar="+ إضافة مادة جديدة" data-en="+ Add New Subject">+ إضافة مادة جديدة</button>
+            </section>
+
+            <!-- جملة تحفيزية -->
+            <section class="card quote-box">
+                <p id="motivQuote">جاري التحميل...</p>
+            </section>
+        </div>
+
+        <!-- ========== صفحة المؤقت ========== -->
+        <div id="timer" class="page">
+            <section class="card timer-box">
+                <h2 data-ar="مؤقّت المذاكرة الذكي" data-en="Smart Study Timer">مؤقّت المذاكرة الذكي</h2>
+                
+                <div class="timer-display" id="timerDisplay">25:00</div>
+                
+                <div class="timer-progress">
+                    <div class="timer-progress-bar" id="timerProgress" style="width: 100%"></div>
+                </div>
+
+                <div class="timer-buttons">
+                    <button id="startStudy" class="btn btn-primary" data-ar="🎯 مذاكرة (25 د)" data-en="🎯 Study (25 min)">🎯 مذاكرة (25 د)</button>
+                    <button id="startBreak" class="btn btn-secondary" data-ar="☕ استراحة (5 د)" data-en="☕ Break (5 min)">☕ استراحة (5 د)</button>
+                    <button id="startLongBreak" class="btn btn-warning" data-ar="🌟 استراحة طويلة (15 د)" data-en="🌟 Long Break (15 min)">🌟 استراحة طويلة (15 د)</button>
+                    <button id="resetTimer" class="btn btn-danger" data-ar="⏹ إيقاف" data-en="⏹ Stop">⏹ إيقاف</button>
+                </div>
+
+                <div style="margin-top: 20px; text-align: center; color: #666; font-size: 0.9rem;">
+                    <span data-ar="عدد الجلسات اليوم: " data-en="Sessions today: ">عدد الجلسات اليوم: </span>
+                    <strong id="sessionCount">0</strong>
+                </div>
+            </section>
+        </div>
+
+        <!-- ========== صفحة المفكرة ========== -->
+        <div id="notes" class="page">
+            <section class="card">
+                <h2 data-ar="📝 مفكرتي" data-en="📝 My Notebook">📝 مفكرتي</h2>
+                
+                <div class="note-color-picker">
+                    <span data-ar="لون الملاحظة:" data-en="Note color:">لون الملاحظة:</span>
+                    <div class="color-option selected" style="background: #fffef0" data-color="#fffef0" onclick="selectColor(this)"></div>
+                    <div class="color-option" style="background: #ffe0e0" data-color="#ffe0e0" onclick="selectColor(this)"></div>
+                    <div class="color-option" style="background: #e0f7fa" data-color="#e0f7fa" onclick="selectColor(this)"></div>
+                    <div class="color-option" style="background: #f3e5f5" data-color="#f3e5f5" onclick="selectColor(this)"></div>
+                    <div class="color-option" style="background: #e8f5e9" data-color="#e8f5e9" onclick="selectColor(this)"></div>
+                </div>
+
+                <textarea id="noteInput" class="note-input" data-ar="اكتب ملاحظتك هنا..." data-en="Write your note here..." placeholder="اكتب ملاحظتك هنا..."></textarea>
+                
+                <button onclick="addNote()" class="btn btn-primary" data-ar="💾 حفظ الملاحظة" data-en="💾 Save Note">💾 حفظ الملاحظة</button>
+            </section>
+
+            <section class="card">
+                <h2 data-ar="ملاحظاتي السابقة" data-en="My Previous Notes">ملاحظاتي السابقة</h2>
+                <div id="notesContainer" class="notes-container">
+                    <div class="empty-state" data-ar="لا توجد ملاحظات بعد" data-en="No notes yet">لا توجد ملاحظات بعد</div>
+                </div>
+            </section>
+        </div>
+
+    </div>
+
+    <!-- إشعارات -->
+    <div id="notification" class="notification hidden"></div>
+
+    <!-- الفوتر -->
+    <footer>
+        <p data-ar="تم صنع هذا الموقع من الطالب باسم" data-en="Made by student Basem">تم صنع هذا الموقع من الطالب باسم</p>
+    </footer>
+
+    <script>
+        // ==================== البيانات والمتغيرات ====================
+        let lang = localStorage.getItem('lang') || 'ar';
+        let timerInterval = null;
+        let seconds = 25 * 60;
+        let isRunning = false;
+        let totalSeconds = 25 * 60;
+        let selectedNoteColor = '#fffef0';
+
+        // الجمل التحفيزية
+        const quotes = {
+            ar: [
+                "النجاح لا يأتي من الراحة، بل من المثابرة.",
+                "ثانويتك فرصتك لبناء مستقبلك، لا تضيّعها.",
+                "كل دقيقة مذاكرة الآن = ساعة راحة لاحقاً.",
+                "الذكاء هو ما تصنعه من مجهودك، لا ما تولد به.",
+                "اصبر تُجبر، واجتهادك لن يضيع سدى.",
+                "المستقبل لمن يُعدّ له اليوم.",
+                "التميز يحتاج قراراً، والقرار يحتاج بداية.",
+                "لا تنتظر الفرصة، اصنعها بمذاكرتك.",
+                "الطريق إلى الجامعة يبدأ بمذاكرة اليوم.",
+                "أنت قادر على تحقيق ما تتمنى، فقط ابدأ."
+            ],
+            en: [
+                "Success doesn't come from comfort, it comes from persistence.",
+                "High school is your chance to build your future, don't waste it.",
+                "Every minute you study now = an hour of rest later.",
+                "Intelligence is what you make of your effort, not what you're born with.",
+                "Be patient and strive; your effort will never be wasted.",
+                "The future belongs to those who prepare for it today.",
+                "Excellence needs a decision, and a decision needs a start.",
+                "Don't wait for opportunity, create it with your studies.",
+                "The road to university starts with today's study.",
+                "You are capable of achieving what you dream, just start."
+            ]
+        };
+
+        // ==================== التنقل بين الصفحات ====================
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(pageId).classList.add('active');
+            event.target.classList.add('active');
+            
+            if (pageId === 'home') {
+                updateStats();
+            }
+        }
+
+        // ==================== اللغة ====================
+        function toggleLanguage() {
+            lang = lang === 'ar' ? 'en' : 'ar';
+            localStorage.setItem('lang', lang);
+            applyLanguage();
+            showRandomQuote();
+            loadNotes();
+        }
+
+        function applyLanguage() {
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            
+            document.querySelectorAll('[data-ar][data-en]').forEach(el => {
+                if (el.hasAttribute('placeholder')) {
+                    el.placeholder = lang === 'ar' ? el.dataset.ar : el.dataset.en;
+                } else {
+                    el.textContent = lang === 'ar' ? el.dataset.ar : el.dataset.en;
+                }
+            });
+
+            document.getElementById('langToggle').textContent = lang === 'ar' ? 'EN' : 'AR';
+        }
+
+        // ==================== التحفيز ====================
+        function showRandomQuote() {
+            const quotesList = quotes[lang];
+            const randomIndex = Math.floor(Math.random() * quotesList.length);
+            document.getElementById('motivQuote').textContent = quotesList[randomIndex];
+        }
+
+        // ==================== الجدول ====================
+        function addRow() {
+            const tbody = document.getElementById('tableBody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><input type="text" placeholder="${lang === 'ar' ? 'مثال: الرياضيات' : 'e.g. Math'}"></td>
+                <td><input type="time"></td>
+                <td><textarea placeholder="${lang === 'ar' ? 'أهداف اليوم...' : 'Today\'s goals...'}"></textarea></td>
+                <td><button class="btn btn-danger" onclick="deleteRow(this)">${lang === 'ar' ? 'حذف' : 'Delete'}</button></td>
+            `;
+            tbody.appendChild(row);
+            updateEmptyState();
+            saveData();
+            updateStats();
+        }
+
+        function deleteRow(btn) {
+            btn.closest('tr').remove();
+            updateEmptyState();
+            saveData();
+            updateStats();
+        }
+
+        function updateEmptyState() {
+            const tbody = document.getElementById('tableBody');
+            const emptyState = document.getElementById('emptyState');
+            const hasRows = tbody.children.length > 0;
+            emptyState.classList.toggle('hidden', hasRows);
+        }
+
+        function saveData() {
+            const rows = [];
+            document.querySelectorAll('#tableBody tr').forEach(row => {
+                rows.push({
+                    subject: row.cells[0].querySelector('input').value,
+                    time: row.cells[1].querySelector('input').value,
+                    notes: row.cells[2].querySelector('textarea').value
+                });
+            });
+            localStorage.setItem('scheduleData', JSON.stringify(rows));
+        }
+
+        function loadData() {
+            const data = JSON.parse(localStorage.getItem('scheduleData') || '[]');
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><input type="text" value="${item.subject || ''}" placeholder="${lang === 'ar' ? 'مثال: الرياضيات' : 'e.g. Math'}"></td>
+                    <td><input type="time" value="${item.time || ''}"></td>
+                    <td><textarea placeholder="${lang === 'ar' ? 'أهداف اليوم...' : 'Today\'s goals...'}">${item.notes || ''}</textarea></td>
+                    <td><button class="btn btn-danger" onclick="deleteRow(this)">${lang === 'ar' ? 'حذف' : 'Delete'}</button></td>
+                `;
+                tbody.appendChild(row);
+            });
+            
+            updateEmptyState();
+            updateStats();
+        }
+
+        // ==================== الإحصائيات ====================
+        function updateStats() {
+            const subjects = document.querySelectorAll('#tableBody tr').length;
+            const notes = JSON.parse(localStorage.getItem('notesData') || '[]').length;
+            
+            document.getElementById('totalSubjects').textContent = subjects;
+            document.getElementById('totalNotes').textContent = notes;
+            
+            // حساب الاستمرارية
+            const lastVisit = localStorage.getItem('lastVisit');
+            const today = new Date().toDateString();
+            let streak = parseInt(localStorage.getItem('streak') || '1');
+            
+            if (lastVisit) {
+                const lastDate = new Date(lastVisit);
+                const diffDays = Math.floor((new Date() - lastDate) / (1000 * 60 * 60 * 24));
+                
+                if (diffDays === 1) {
+                    streak++;
+                } else if (diffDays > 1) {
+                    streak = 1;
+                }
+            }
+            
+            localStorage.setItem('lastVisit', today);
+            localStorage.setItem('streak', streak);
+            document.getElementById('studyStreak').textContent = streak;
+        }
+
+        // ==================== التايمر ====================
+        function updateTimerDisplay() {
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            document.getElementById('timerDisplay').textContent = 
+                `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            
+            // تحديث شريط التقدم
+            const progress = (seconds / totalSeconds) * 100;
+            document.getElementById('timerProgress').style.width = `${progress}%`;
+        }
+
+        function startTimer(minutes, type) {
+            if (isRunning) clearInterval(timerInterval);
+            
+            seconds = minutes * 60;
+            totalSeconds = seconds;
+            isRunning = true;
+            updateTimerDisplay();
+            
+            timerInterval = setInterval(() => {
+                seconds--;
+                updateTimerDisplay();
+                
+                if (seconds <= 0) {
+                    clearInterval(timerInterval);
+                    isRunning = false;
+                    
+                    let message;
+                    if (type === 'study') {
+                        message = lang === 'ar' ? '🎉 انتهت فترة المذاكرة! حان وقت الاستراحة' : '🎉 Study session over! Time for a break';
+                        incrementSessionCount();
+                    } else if (type === 'break') {
+                        message = lang === 'ar' ? '☕ انتهت الاستراحة! استعد للمذاكرة' : '☕ Break over! Ready to study';
+                    } else {
+                        message = lang === 'ar' ? '🌟 انتهت الاستراحة الطويلة! جاهز للمذاكرة؟' : '🌟 Long break over! Ready to study?';
+                    }
+                    
+                    showNotification(message);
+                }
+            }, 1000);
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            seconds = 25 * 60;
+            totalSeconds = seconds;
+            updateTimerDisplay();
+        }
+
+        function incrementSessionCount() {
+            const count = parseInt(localStorage.getItem('sessionCount') || '0') + 1;
+            localStorage.setItem('sessionCount', count);
+            document.getElementById('sessionCount').textContent = count;
+        }
+
+        // ==================== المفكرة ====================
+        function selectColor(element) {
+            document.querySelectorAll('.color-option').forEach(c => c.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedNoteColor = element.dataset.color;
+        }
+
+        function addNote() {
+            const input = document.getElementById('noteInput');
+            const text = input.value.trim();
+            
+            if (!text) {
+                showNotification(lang === 'ar' ? '⚠️ الرجاء كتابة ملاحظة أولاً' : '⚠️ Please write a note first');
+                return;
+            }
+            
+            const notes = JSON.parse(localStorage.getItem('notesData') || '[]');
+            const note = {
+                id: Date.now(),
+                text: text,
+                color: selectedNoteColor,
+                date: new Date().toLocaleString(lang === 'ar' ? 'ar-EG' : 'en-US')
+            };
+            
+            notes.unshift(note);
+            localStorage.setItem('notesData', JSON.stringify(notes));
+            
+            input.value = '';
+            loadNotes();
+            updateStats();
+            showNotification(lang === 'ar' ? '✅ تم حفظ الملاحظة بنجاح' : '✅ Note saved successfully');
+        }
+
+        function loadNotes() {
+            const notes = JSON.parse(localStorage.getItem('notesData') || '[]');
+            const container = document.getElementById('notesContainer');
+            
+            if (notes.length === 0) {
+                container.innerHTML = `<div class="empty-state">${lang === 'ar' ? 'لا توجد ملاحظات بعد' : 'No notes yet'}</div>`;
+                return;
+            }
+            
+            container.innerHTML = notes.map(note => `
+                <div class="note-card" style="background: ${note.color}">
+                    <button class="note-delete" onclick="deleteNote(${note.id})">🗑️</button>
+                    <div class="note-date">${note.date}</div>
+                    <div class="note-text">${escapeHtml(note.text)}</div>
+                </div>
+            `).join('');
+        }
+
+        function deleteNote(id) {
+            let notes = JSON.parse(localStorage.getItem('notesData') || '[]');
+            notes = notes.filter(n => n.id !== id);
+            localStorage.setItem('notesData', JSON.stringify(notes));
+            loadNotes();
+            updateStats();
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ==================== الإشعارات ====================
+        function showNotification(message) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification(lang === 'ar' ? 'مذاكرتي 📚' : 'My Study 📚', {
+                    body: message,
+                    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">📚</text></svg>'
+                });
+            }
+
+            const notif = document.getElementById('notification');
+            notif.textContent = message;
+            notif.classList.remove('hidden');
+            
+            setTimeout(() => notif.classList.add('hidden'), 5000);
+        }
+
+        function checkDailyReminder() {
+            const now = new Date();
+            const hours = now.getHours();
+            const lastReminder = localStorage.getItem('lastReminder');
+            const today = now.toDateString();
+            
+            if (hours >= 10 && lastReminder !== today) {
+                localStorage.setItem('lastReminder', today);
+                const message = lang === 'ar' 
+                    ? '📚 تذكير يومي: راجع جدول مذاكرتك وأنجز مهام اليوم!'
+                    : '📚 Daily reminder: Review your schedule and finish today\'s tasks!';
+                showNotification(message);
+            }
+        }
+
+        // ==================== الأحداث ====================
+        document.getElementById('langToggle').addEventListener('click', toggleLanguage);
+        document.getElementById('addRowBtn').addEventListener('click', addRow);
+        document.getElementById('tableBody').addEventListener('input', saveData);
+        
+        document.getElementById('startStudy').addEventListener('click', () => startTimer(25, 'study'));
+        document.getElementById('startBreak').addEventListener('click', () => startTimer(5, 'break'));
+        document.getElementById('startLongBreak').addEventListener('click', () => startTimer(15, 'longBreak'));
+        document.getElementById('resetTimer').addEventListener('click', resetTimer);
+
+        // ==================== التشغيل الأولي ====================
+        applyLanguage();
+        loadData();
+        loadNotes();
+        showRandomQuote();
+        updateTimerDisplay();
+        updateStats();
+        
+        document.getElementById('sessionCount').textContent = localStorage.getItem('sessionCount') || '0';
+
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
+
+        setInterval(checkDailyReminder, 60000);
+        checkDailyReminder();
+    </script>
+</body>
+</html>
