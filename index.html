@@ -25,6 +25,16 @@
             --shadow: 0 2px 8px rgba(0,0,0,.08);
         }
 
+        body.dark-mode {
+            --bg: #1a1a2e;
+            --card: #16213e;
+            --text: #eaeaea;
+        }
+
+        body.dark-mode .navbar { background: #0f3460; }
+        body.dark-mode header { background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%); }
+        body.dark-mode th { background: #0f3460; color: #eaeaea; }
+
         body {
             background: var(--bg);
             color: var(--text);
@@ -32,6 +42,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            transition: all 0.3s ease;
         }
 
         .navbar {
@@ -66,24 +77,22 @@
             color: white;
         }
 
-        .nav-btn.ai-btn:hover, .nav-btn.ai-btn.active {
-            background: var(--ai);
-        }
+        .nav-btn.ai-btn:hover, .nav-btn.ai-btn.active { background: var(--ai); }
 
-        .lang-btn {
+        .lang-btn, .dark-mode-btn {
             position: fixed;
             top: 10px;
-            left: 10px;
-            z-index: 1001;
             padding: 8px 16px;
             border: none;
-            background: var(--secondary);
-            color: #fff;
             border-radius: var(--radius);
             cursor: pointer;
             font-size: 14px;
             font-weight: bold;
+            z-index: 1001;
         }
+
+        .lang-btn { left: 10px; background: var(--secondary); color: #fff; }
+        .dark-mode-btn { left: 70px; background: #2c3e50; color: #fff; }
 
         header {
             text-align: center;
@@ -93,15 +102,8 @@
             margin-bottom: 20px;
         }
 
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-
-        header p {
-            font-size: 1.1rem;
-            opacity: 0.95;
-        }
+        header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        header p { font-size: 1.1rem; opacity: 0.95; }
 
         .container {
             max-width: 800px;
@@ -110,13 +112,8 @@
             flex: 1;
         }
 
-        .page {
-            display: none;
-        }
-
-        .page.active {
-            display: block;
-        }
+        .page { display: none; }
+        .page.active { display: block; }
 
         .card {
             background: var(--card);
@@ -134,6 +131,739 @@
             padding-bottom: 10px;
         }
 
+        /* ==================== المفكرة المحسنة - أوراق مربعة صغيرة ==================== */
+        .notes-header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: var(--radius);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .notes-header::before {
+            content: '📝';
+            position: absolute;
+            font-size: 6rem;
+            opacity: 0.1;
+            left: -10px;
+            top: -10px;
+        }
+
+        .notes-header h2 {
+            color: white;
+            border: none;
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .add-note-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 25px;
+            border-radius: var(--radius);
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .add-note-section {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+        }
+
+        .note-input {
+            width: 100%;
+            min-height: 100px;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 1rem;
+            resize: vertical;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            margin-bottom: 15px;
+        }
+
+        body.dark-mode .note-input {
+            background: #1a1a2e;
+            color: #eaeaea;
+        }
+
+        .note-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.15);
+        }
+
+        .color-picker-title {
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #4a5568;
+            font-size: 1rem;
+        }
+
+        body.dark-mode .color-picker-title {
+            color: #cbd5e0;
+        }
+
+        .note-colors {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .color-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+
+        .color-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .color-btn.selected {
+            border-color: #2d3748;
+            transform: scale(1.15);
+        }
+
+        .color-btn.selected::after {
+            content: '✓';
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+
+        /* ألوان غامقة للأوراق المربعة */
+        .color-red { background: #e53e3e; }
+        .color-purple { background: #805ad5; }
+        .color-teal { background: #38b2ac; }
+        .color-pink { background: #d53f8c; }
+        .color-yellow { background: #d69e2e; }
+        .color-blue { background: #3182ce; }
+        .color-green { background: #38a169; }
+        .color-orange { background: #dd6b20; }
+
+        .add-note-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 35px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 auto;
+        }
+
+        .add-note-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        /* شبكة الأوراق المربعة الصغيرة */
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 15px 0;
+        }
+
+        /* الورقة المربعة المعلقة */
+        .sticky-note {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+            padding: 15px;
+            border-radius: 4px;
+            box-shadow: 
+                0 4px 6px rgba(0,0,0,0.1),
+                0 10px 20px rgba(0,0,0,0.1),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* تأثير الورقة المقوسة قليلاً */
+        .sticky-note::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .sticky-note:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 
+                0 8px 15px rgba(0,0,0,0.15),
+                0 15px 35px rgba(0,0,0,0.15),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+            z-index: 10;
+        }
+
+        /* الدبوس المربع الصغير */
+        .pin {
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 16px;
+            background: linear-gradient(135deg, #718096 0%, #4a5568 100%);
+            border-radius: 50%;
+            box-shadow: 
+                0 2px 4px rgba(0,0,0,0.3),
+                inset 0 -2px 4px rgba(0,0,0,0.2),
+                inset 0 2px 4px rgba(255,255,255,0.3);
+            z-index: 5;
+        }
+
+        .pin::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 6px;
+            height: 6px;
+            background: radial-gradient(circle at 30% 30%, #a0aec0, #4a5568);
+            border-radius: 50%;
+        }
+
+        /* ألوان الأوراق المربعة */
+        .note-red { background: #fc8181; color: #742a2a; }
+        .note-red .pin { background: linear-gradient(135deg, #9b2c2c 0%, #742a2a 100%); }
+
+        .note-purple { background: #b794f4; color: #44337a; }
+        .note-purple .pin { background: linear-gradient(135deg, #553c9a 0%, #44337a 100%); }
+
+        .note-teal { background: #81e6d9; color: #234e52; }
+        .note-teal .pin { background: linear-gradient(135deg, #285e61 0%, #234e52 100%); }
+
+        .note-pink { background: #f687b3; color: #702459; }
+        .note-pink .pin { background: linear-gradient(135deg, #97266d 0%, #702459 100%); }
+
+        .note-yellow { background: #f6e05e; color: #744210; }
+        .note-yellow .pin { background: linear-gradient(135deg, #975a16 0%, #744210 100%); }
+
+        .note-blue { background: #63b3ed; color: #2a4365; }
+        .note-blue .pin { background: linear-gradient(135deg, #2b6cb0 0%, #2a4365 100%); }
+
+        .note-green { background: #68d391; color: #22543d; }
+        .note-green .pin { background: linear-gradient(135deg, #276749 0%, #22543d 100%); }
+
+        .note-orange { background: #f6ad55; color: #7c2d12; }
+        .note-orange .pin { background: linear-gradient(135deg, #c05621 0%, #7c2d12 100%); }
+
+        /* محتوى الورقة المربعة */
+        .note-content {
+            flex: 1;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        /* شريط تمرير صغير للورقة */
+        .note-content::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .note-content::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.2);
+            border-radius: 2px;
+        }
+
+        /* تذييل الورقة المربعة */
+        .note-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 8px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            font-size: 0.75rem;
+            opacity: 0.8;
+            margin-top: auto;
+        }
+
+        .note-date {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .note-delete-btn {
+            background: rgba(0,0,0,0.15);
+            border: none;
+            color: inherit;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .note-delete-btn:hover {
+            background: rgba(0,0,0,0.3);
+            transform: scale(1.1);
+        }
+
+        /* رسالة فارغة */
+        .empty-notes {
+            text-align: center;
+            padding: 50px 20px;
+            color: #999;
+        }
+
+        .empty-notes-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .empty-notes-text {
+            font-size: 1.1rem;
+            font-style: italic;
+        }
+
+        /* ==================== الحديقة الواقعية ==================== */
+        .garden-container {
+            margin-top: 30px;
+            padding: 0;
+            background: linear-gradient(to bottom, 
+                #87CEEB 0%, 
+                #B0E0E6 30%,
+                #E0F6FF 45%,
+                #98D98E 45%,
+                #7CB342 70%,
+                #558B2F 100%
+            );
+            border-radius: var(--radius);
+            min-height: 450px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 -10px 30px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .garden-container {
+            background: linear-gradient(to bottom, 
+                #1a237e 0%, 
+                #283593 30%,
+                #3949ab 45%,
+                #1b5e20 45%,
+                #2e7d32 70%,
+                #1b5e20 100%
+            );
+        }
+
+        /* السماء والغيوم */
+        .sky {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 45%;
+            overflow: hidden;
+        }
+
+        .sun {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            width: 70px;
+            height: 70px;
+            background: radial-gradient(circle at 30% 30%, #FFF176, #FFD54F, #FF8F00);
+            border-radius: 50%;
+            box-shadow: 
+                0 0 40px rgba(255, 213, 79, 0.6),
+                0 0 80px rgba(255, 213, 79, 0.3);
+            animation: sunPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes sunPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(255, 213, 79, 0.6), 0 0 80px rgba(255, 213, 79, 0.3); }
+            50% { transform: scale(1.05); box-shadow: 0 0 60px rgba(255, 213, 79, 0.8), 0 0 100px rgba(255, 213, 79, 0.4); }
+        }
+
+        .cloud {
+            position: absolute;
+            background: linear-gradient(to bottom, #ffffff 0%, #f0f0f0 100%);
+            border-radius: 100px;
+            opacity: 0.9;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .cloud::before,
+        .cloud::after {
+            content: '';
+            position: absolute;
+            background: inherit;
+            border-radius: 100px;
+        }
+
+        .cloud1 {
+            width: 100px;
+            height: 40px;
+            top: 50px;
+            left: 10%;
+            animation: float1 25s linear infinite;
+        }
+
+        .cloud1::before {
+            width: 50px;
+            height: 50px;
+            top: -25px;
+            left: 10px;
+        }
+
+        .cloud1::after {
+            width: 60px;
+            height: 40px;
+            top: -15px;
+            right: 10px;
+        }
+
+        .cloud2 {
+            width: 80px;
+            height: 35px;
+            top: 90px;
+            left: 60%;
+            animation: float2 30s linear infinite;
+        }
+
+        .cloud2::before {
+            width: 40px;
+            height: 40px;
+            top: -20px;
+            left: 15px;
+        }
+
+        .cloud2::after {
+            width: 50px;
+            height: 35px;
+            top: -10px;
+            right: 15px;
+        }
+
+        @keyframes float1 {
+            from { transform: translateX(-150px); }
+            to { transform: translateX(calc(100vw + 150px)); }
+        }
+
+        @keyframes float2 {
+            from { transform: translateX(-100px); }
+            to { transform: translateX(calc(100vw + 100px)); }
+        }
+
+        /* عنوان الحديقة */
+        .garden-title {
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #2e7d32;
+            font-size: 1.6rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
+            z-index: 10;
+            background: rgba(255,255,255,0.9);
+            padding: 10px 30px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .garden-title {
+            color: #81c784;
+            background: rgba(0,0,0,0.5);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* إحصائيات الحديقة */
+        .garden-stats {
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 10;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .garden-stat {
+            background: rgba(255,255,255,0.95);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: #2e7d32;
+            font-size: 0.95rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border: 2px solid #4caf50;
+        }
+
+        body.dark-mode .garden-stat {
+            background: rgba(0,0,0,0.7);
+            color: #81c784;
+            border-color: #4caf50;
+        }
+
+        /* الأرض والعشب */
+        .garden-ground {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 55%;
+            background: linear-gradient(to bottom, 
+                #98D98E 0%,
+                #7CB342 20%,
+                #689F38 50%,
+                #558B2F 80%,
+                #33691E 100%
+            );
+            overflow: hidden;
+        }
+
+        body.dark-mode .garden-ground {
+            background: linear-gradient(to bottom, 
+                #2e7d32 0%,
+                #1b5e20 20%,
+                #0d3b15 50%,
+                #0a2e10 80%,
+                #051f0a 100%
+            );
+        }
+
+        /* تلال العشب */
+        .grass-hill {
+            position: absolute;
+            bottom: 0;
+            width: 120%;
+            height: 60%;
+            background: inherit;
+            border-radius: 50% 50% 0 0;
+        }
+
+        .grass-hill:nth-child(1) {
+            left: -10%;
+            height: 80%;
+            opacity: 0.9;
+        }
+
+        .grass-hill:nth-child(2) {
+            right: -20%;
+            height: 60%;
+            opacity: 0.8;
+        }
+
+        /* طبقات العشب */
+        .grass-layer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background-image: 
+                linear-gradient(135deg, transparent 45%, rgba(255,255,255,0.1) 45%, rgba(255,255,255,0.1) 55%, transparent 55%),
+                linear-gradient(45deg, transparent 45%, rgba(0,0,0,0.05) 45%, rgba(0,0,0,0.05) 55%, transparent 55%);
+            background-size: 20px 20px;
+            opacity: 0.5;
+        }
+
+        /* تصميم الشجرة الواقعية المنظمة */
+        .tree {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform-origin: bottom center;
+            animation: treeGrow 0.8s ease-out;
+            z-index: 5;
+        }
+
+        @keyframes treeGrow {
+            0% { transform: scale(0); opacity: 0; }
+            60% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .tree-sway {
+            animation: treeGrow 0.8s ease-out, sway 4s ease-in-out infinite 0.8s;
+        }
+
+        @keyframes sway {
+            0%, 100% { transform: rotate(-1deg); }
+            50% { transform: rotate(1deg); }
+        }
+
+        /* جذع الشجرة */
+        .tree-trunk {
+            width: 12px;
+            height: 40px;
+            background: linear-gradient(to right, 
+                #5D4037 0%,
+                #8D6E63 30%,
+                #A1887F 50%,
+                #8D6E63 70%,
+                #5D4037 100%
+            );
+            border-radius: 2px;
+            position: relative;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+        }
+
+        /* أوراق الشجرة */
+        .tree-foliage {
+            position: relative;
+            width: 60px;
+            height: 50px;
+            margin-bottom: -10px;
+        }
+
+        .foliage-layer {
+            position: absolute;
+            border-radius: 50%;
+            box-shadow: 
+                inset -5px -5px 10px rgba(0,0,0,0.1),
+                0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .foliage-layer:nth-child(1) {
+            width: 50px;
+            height: 45px;
+            bottom: 0;
+            left: 5px;
+            background: radial-gradient(circle at 30% 30%, #66BB6A, #2E7D32);
+        }
+
+        .foliage-layer:nth-child(2) {
+            width: 40px;
+            height: 35px;
+            bottom: 20px;
+            left: 10px;
+            background: radial-gradient(circle at 30% 30%, #81C784, #388E3C);
+        }
+
+        .foliage-layer:nth-child(3) {
+            width: 30px;
+            height: 28px;
+            bottom: 35px;
+            left: 15px;
+            background: radial-gradient(circle at 30% 30%, #A5D6A7, #43A047);
+        }
+
+        /* أنواع مختلفة من الأشجار */
+        .tree-pine .tree-foliage {
+            height: 60px;
+        }
+
+        .tree-pine .foliage-layer {
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+        }
+
+        .tree-pine .foliage-layer:nth-child(1) {
+            width: 50px;
+            height: 40px;
+            bottom: 0;
+            background: linear-gradient(to bottom, #2E7D32, #1B5E20);
+        }
+
+        .tree-pine .foliage-layer:nth-child(2) {
+            width: 40px;
+            height: 35px;
+            bottom: 25px;
+            left: 5px;
+            background: linear-gradient(to bottom, #388E3C, #2E7D32);
+        }
+
+        .tree-pine .foliage-layer:nth-child(3) {
+            width: 30px;
+            height: 28px;
+            bottom: 45px;
+            left: 10px;
+            background: linear-gradient(to bottom, #43A047, #388E3C);
+        }
+
+        .tree-palm .tree-trunk {
+            width: 10px;
+            height: 50px;
+            background: linear-gradient(to right, #795548, #8D6E63, #795548);
+            transform: skewX(-5deg);
+        }
+
+        .tree-palm .tree-foliage {
+            width: 80px;
+            height: 40px;
+            top: -10px;
+        }
+
+        .tree-palm .foliage-layer {
+            width: 25px;
+            height: 8px;
+            border-radius: 50%;
+            background: linear-gradient(to right, #66BB6A, #2E7D32);
+        }
+
+        /* رسالة فارغة للحديقة */
+        .empty-garden {
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #33691E;
+            z-index: 20;
+        }
+
+        body.dark-mode .empty-garden {
+            color: #81c784;
+        }
+
+        .empty-garden-icon {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* باقي الأنماط العامة */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -149,33 +879,12 @@
             text-align: center;
         }
 
-        .stat-number {
-            font-size: 1.8rem;
-            font-weight: bold;
-        }
+        .stat-number { font-size: 1.8rem; font-weight: bold; }
+        .stat-label { font-size: 0.8rem; opacity: 0.9; }
 
-        .stat-label {
-            font-size: 0.8rem;
-            opacity: 0.9;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 15px;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: center;
-            border: 1px solid #e0e0e0;
-        }
-
-        th {
-            background: #f8f9fa;
-            font-weight: 600;
-            color: var(--primary);
-        }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+        th, td { padding: 12px; text-align: center; border: 1px solid #e0e0e0; }
+        th { background: #f8f9fa; font-weight: 600; color: var(--primary); }
 
         td input, td textarea {
             width: 100%;
@@ -183,12 +892,11 @@
             padding: 8px;
             border-radius: 6px;
             font-size: 14px;
+            background: var(--card);
+            color: var(--text);
         }
 
-        td textarea {
-            resize: vertical;
-            min-height: 60px;
-        }
+        td textarea { resize: vertical; min-height: 60px; }
 
         .btn {
             cursor: pointer;
@@ -200,30 +908,11 @@
             font-weight: 600;
         }
 
-        .btn-primary {
-            background: var(--primary);
-            color: #fff;
-        }
-
-        .btn-secondary {
-            background: var(--secondary);
-            color: #fff;
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: #fff;
-        }
-
-        .btn-warning {
-            background: var(--warning);
-            color: #fff;
-        }
-
-        .btn-ai {
-            background: var(--ai);
-            color: #fff;
-        }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-secondary { background: var(--secondary); color: #fff; }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .btn-warning { background: var(--warning); color: #fff; }
+        .btn-success { background: #27ae60; color: #fff; }
 
         .quote-box {
             text-align: center;
@@ -231,625 +920,198 @@
             border-right: 4px solid var(--primary);
         }
 
-        #motivQuote {
-            font-size: 1.3rem;
-            color: var(--primary);
-            font-weight: bold;
-            line-height: 1.8;
-        }
+        #motivQuote { font-size: 1.3rem; color: var(--primary); font-weight: bold; line-height: 1.8; }
 
-        .timer-box {
-            text-align: center;
-        }
-
-        .timer-display {
-            font-size: 4rem;
-            margin: 20px 0;
-            color: var(--primary);
-            font-weight: bold;
-            font-family: 'Courier New', monospace;
-        }
-
-        .timer-progress {
-            width: 100%;
-            height: 10px;
-            background: #e0e0e0;
-            border-radius: 5px;
-            margin: 15px 0;
-            overflow: hidden;
-        }
-
-        .timer-progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            transition: width 1s linear;
-        }
-
-        .timer-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .timer-buttons .btn {
-            flex: 1;
-            min-width: 150px;
-            max-width: 200px;
-        }
-
-        .garden-container {
-            margin-top: 30px;
-            padding: 20px;
-            background: linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 40%, #90EE90 40%, #7CFC00 100%);
-            border-radius: var(--radius);
-            min-height: 400px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .garden-title {
-            text-align: center;
-            color: #1b5e20;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-
-        .garden-stats {
+        /* المؤقت */
+        .timer-box { text-align: center; }
+        .timer-display { font-size: 4rem; margin: 20px 0; color: var(--primary); font-weight: bold; font-family: 'Courier New', monospace; }
+        
+        .timer-inputs {
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 15px;
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
 
-        .garden-stat {
-            background: rgba(255,255,255,0.95);
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-weight: bold;
-            color: #2e7d32;
-            border: 2px solid #4caf50;
-        }
-
-        .garden-ground {
-            position: relative;
-            height: 250px;
-            background: linear-gradient(to bottom, 
-                #81c784 0%, 
-                #66bb6a 30%, 
-                #4caf50 60%, 
-                #388e3c 100%
-            );
-            border-radius: 0 0 var(--radius) var(--radius);
-            margin: 0 -20px -20px -20px;
-            overflow: hidden;
-        }
-
-        .garden-ground::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 20px;
-            background: repeating-linear-gradient(
-                90deg,
-                transparent,
-                transparent 10px,
-                rgba(255,255,255,0.1) 10px,
-                rgba(255,255,255,0.1) 20px
-            );
-        }
-
-        .tree {
-            position: absolute;
-            bottom: 20px;
-            animation: growTree 0.8s ease-out;
-            transform-origin: bottom center;
-            font-size: 3rem;
-        }
-
-        @keyframes growTree {
-            0% { transform: scale(0) translateY(50px); opacity: 0; }
-            50% { transform: scale(1.2) translateY(-10px); }
-            100% { transform: scale(1) translateY(0); opacity: 1; }
-        }
-
-        .tree-sway {
-            animation: sway 3s ease-in-out infinite;
-            transform-origin: bottom center;
-        }
-
-        @keyframes sway {
-            0%, 100% { transform: rotate(-2deg); }
-            50% { transform: rotate(2deg); }
-        }
-
-        .sun {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: radial-gradient(circle, #FFD700 0%, #FFA500 70%);
-            border-radius: 50%;
-            box-shadow: 0 0 40px #FFD700;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .cloud {
-            position: absolute;
-            background: white;
-            border-radius: 100px;
-            opacity: 0.8;
-            animation: float 20s linear infinite;
-        }
-
-        .cloud1 {
+        .timer-input-group { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        .timer-input-group label { font-size: 0.9rem; color: #666; font-weight: 600; }
+        .timer-input-group input {
             width: 80px;
-            height: 40px;
-            top: 30px;
-            left: -100px;
-        }
-
-        .cloud2 {
-            width: 60px;
-            height: 30px;
-            top: 60px;
-            left: -80px;
-            animation-delay: -10s;
-        }
-
-        @keyframes float {
-            from { transform: translateX(0); }
-            to { transform: translateX(calc(100vw + 200px)); }
-        }
-
-        .empty-garden {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            color: #1b5e20;
-            font-size: 1.1rem;
-            font-weight: bold;
-        }
-
-        .empty-garden-icon {
-            font-size: 4rem;
-            margin-bottom: 10px;
-        }
-
-        /* ===== باسم AI المتقدم ===== */
-        .ai-container {
-            display: flex;
-            flex-direction: column;
-            height: 650px;
-            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
-            border-radius: var(--radius);
-            overflow: hidden;
-        }
-
-        .ai-header {
-            background: linear-gradient(135deg, var(--ai) 0%, #7b1fa2 100%);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            position: relative;
-        }
-
-        .ai-avatar {
-            width: 70px;
-            height: 70px;
-            background: white;
-            border-radius: 50%;
-            margin: 0 auto 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        .ai-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.85rem;
-            opacity: 0.9;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: #4caf50;
-            border-radius: 50%;
-            animation: blink 2s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        .ai-context {
-            background: rgba(156, 39, 176, 0.1);
-            padding: 10px 15px;
-            font-size: 12px;
-            color: #666;
-            text-align: center;
-            border-bottom: 1px solid rgba(156, 39, 176, 0.2);
-        }
-
-        .ai-suggestions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            padding: 15px;
-            justify-content: center;
-            background: rgba(255,255,255,0.5);
-        }
-
-        .ai-suggestion {
-            padding: 8px 16px;
-            background: white;
-            border: 2px solid var(--ai);
-            color: var(--ai);
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
-        .ai-suggestion:hover {
-            background: var(--ai);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(156, 39, 176, 0.3);
-        }
-
-        .ai-chat {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .ai-message {
-            max-width: 85%;
-            padding: 15px 18px;
-            border-radius: 20px;
-            line-height: 1.7;
-            animation: fadeIn 0.4s ease-out;
-            position: relative;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .ai-message.user {
-            align-self: flex-end;
-            background: linear-gradient(135deg, var(--ai) 0%, #7b1fa2 100%);
-            color: white;
-            border-bottom-right-radius: 5px;
-        }
-
-        .ai-message.bot {
-            align-self: flex-start;
-            background: white;
-            color: var(--text);
-            border-bottom-left-radius: 5px;
-            border: 1px solid #e0e0e0;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-        }
-
-        .ai-message.bot::before {
-            content: '🤖 باسم: ';
-            font-weight: bold;
-            color: var(--ai);
-        }
-
-        .message-time {
-            font-size: 0.7rem;
-            opacity: 0.6;
-            margin-top: 8px;
-            text-align: left;
-        }
-
-        .ai-message.user .message-time {
-            text-align: right;
-            color: rgba(255,255,255,0.8);
-        }
-
-        .ai-typing {
-            display: none;
-            align-items: center;
-            gap: 8px;
-            padding: 15px 20px;
-            color: var(--ai);
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .ai-typing.active {
-            display: flex;
-        }
-
-        .typing-indicator {
-            display: flex;
-            gap: 4px;
-        }
-
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--ai);
-            border-radius: 50%;
-            animation: typing 1.4s infinite;
-        }
-
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes typing {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-10px); }
-        }
-
-        .ai-input-area {
-            padding: 20px;
-            background: white;
-            border-top: 2px solid rgba(156, 39, 176, 0.1);
-        }
-
-        .ai-input-container {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-
-        .ai-input {
-            flex: 1;
-            padding: 14px 20px;
-            border: 2px solid #e0e0e0;
-            border-radius: 30px;
-            font-size: 14px;
-            outline: none;
-            transition: all 0.3s;
-        }
-
-        .ai-input:focus {
-            border-color: var(--ai);
-            box-shadow: 0 0 0 4px rgba(156, 39, 176, 0.1);
-        }
-
-        .ai-send-btn {
-            padding: 14px 28px;
-            background: linear-gradient(135deg, var(--ai) 0%, #7b1fa2 100%);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 14px;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .ai-send-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(156, 39, 176, 0.4);
-        }
-
-        .ai-send-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .quick-actions {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .quick-action {
-            padding: 8px 16px;
-            background: #f5f5f5;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.3s;
-            color: #666;
-        }
-
-        .quick-action:hover {
-            background: var(--ai);
-            color: white;
-            border-color: var(--ai);
-        }
-
-        .notes-container {
-            display: grid;
-            gap: 15px;
-        }
-
-        .note-card {
-            background: #fffef0;
-            border: 1px solid #f0e6b6;
-            border-radius: var(--radius);
-            padding: 15px;
-            position: relative;
-            transition: transform 0.2s;
-        }
-
-        .note-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .note-date {
-            font-size: 0.8rem;
-            color: #999;
-            margin-bottom: 8px;
-        }
-
-        .note-text {
-            font-size: 1rem;
-            line-height: 1.6;
-            white-space: pre-wrap;
-        }
-
-        .note-delete {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: var(--danger);
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .note-input {
-            width: 100%;
-            min-height: 100px;
+            padding: 10px;
             border: 2px solid var(--primary);
             border-radius: var(--radius);
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: var(--card);
+            color: var(--text);
+        }
+
+        .timer-progress { width: 100%; height: 10px; background: #e0e0e0; border-radius: 5px; margin: 15px 0; overflow: hidden; }
+        .timer-progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); transition: width 1s linear; }
+        
+        .timer-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 20px; }
+        .timer-buttons .btn { flex: 1; min-width: 150px; max-width: 200px; }
+
+        .points-display {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #333;
             padding: 15px;
-            font-size: 1rem;
-            resize: vertical;
-            margin-bottom: 10px;
+            border-radius: var(--radius);
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
         }
 
-        .note-color-picker {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            align-items: center;
+        /* المتجر */
+        .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
+        
+        .tree-item {
+            background: var(--card);
+            border: 3px solid #e0e0e0;
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
         }
 
-        .color-option {
+        .tree-item:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-color: var(--primary); }
+        .tree-item.locked { opacity: 0.6; cursor: not-allowed; filter: grayscale(100%); }
+        .tree-icon { font-size: 4rem; margin-bottom: 10px; }
+        .tree-name { font-weight: bold; margin-bottom: 5px; color: var(--text); }
+        .tree-cost { background: linear-gradient(135deg, #FFD700, #FFA500); color: #333; padding: 5px 15px; border-radius: 20px; font-weight: bold; display: inline-block; }
+        .tree-owned { background: var(--primary); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; }
+
+        /* الأسئلة الشائعة */
+        .faq-item { background: var(--card); border: 1px solid #e0e0e0; border-radius: var(--radius); margin-bottom: 15px; overflow: hidden; }
+        .faq-question { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 15px 20px; cursor: pointer; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        .faq-answer { padding: 20px; background: var(--bg); display: none; line-height: 1.8; }
+        .faq-answer.show { display: block; }
+        .faq-toggle { font-size: 1.5rem; transition: transform 0.3s; }
+        .faq-toggle.rotate { transform: rotate(180deg); }
+
+        /* دائرة الإكمال */
+        .complete-circle {
             width: 30px;
             height: 30px;
             border-radius: 50%;
+            border: 3px solid var(--primary);
+            background: transparent;
             cursor: pointer;
-            border: 3px solid transparent;
-            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            font-size: 16px;
         }
 
-        .color-option.selected {
-            border-color: var(--text);
-            transform: scale(1.2);
-        }
+        .complete-circle:hover { background: rgba(44, 156, 105, 0.1); transform: scale(1.1); }
+        .complete-circle.checked { background: var(--primary); border-color: var(--primary); }
+        .complete-circle.checked::after { content: '✓'; color: white; font-weight: bold; }
 
-        .notification {
+        .subject-completed { background: rgba(44, 156, 105, 0.1) !important; }
+
+        /* نافذة التحفيز */
+        .motivation-popup {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--primary);
-            color: #fff;
-            padding: 15px 25px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
             border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            animation: slideIn 0.5s;
-            z-index: 1000;
-            max-width: 300px;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(100px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        footer {
             text-align: center;
-            padding: 20px;
-            background: var(--card);
-            color: #666;
-            margin-top: 20px;
-            box-shadow: 0 -2px 8px rgba(0,0,0,.05);
+            z-index: 2000;
+            max-width: 90%;
+            width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
-        footer p {
-            font-size: 0.9rem;
-        }
+        .motivation-popup.show { transform: translate(-50%, -50%) scale(1); }
+        .motivation-popup h3 { font-size: 1.5rem; margin-bottom: 15px; }
+        .motivation-popup p { font-size: 1.1rem; line-height: 1.6; }
+        .motivation-popup .close-btn { margin-top: 20px; background: white; color: var(--primary); border: none; padding: 10px 30px; border-radius: var(--radius); cursor: pointer; font-weight: bold; }
 
-        .empty-state {
-            text-align: center;
-            color: #999;
-            padding: 20px;
-            font-style: italic;
-        }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1999; display: none; }
+        .overlay.show { display: block; }
 
-        .celebration {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-        }
+        /* AI */
+        .ai-container { display: flex; flex-direction: column; height: 650px; background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); border-radius: var(--radius); overflow: hidden; }
+        .ai-header { background: linear-gradient(135deg, var(--ai) 0%, #7b1fa2 100%); color: white; padding: 20px; text-align: center; }
+        .ai-avatar { width: 70px; height: 70px; background: white; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        .ai-status { display: inline-flex; align-items: center; gap: 5px; font-size: 0.85rem; opacity: 0.9; }
+        .status-dot { width: 8px; height: 8px; background: #4caf50; border-radius: 50%; animation: blink 2s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .ai-context { background: rgba(156, 39, 176, 0.1); padding: 10px 15px; font-size: 12px; color: #666; text-align: center; border-bottom: 1px solid rgba(156, 39, 176, 0.2); }
+        .ai-suggestions { display: flex; flex-wrap: wrap; gap: 8px; padding: 15px; justify-content: center; background: rgba(255,255,255,0.5); }
+        .ai-suggestion { padding: 8px 16px; background: white; border: 2px solid var(--ai); color: var(--ai); border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: 500; transition: all 0.3s; }
+        .ai-suggestion:hover { background: var(--ai); color: white; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(156, 39, 176, 0.3); }
+        .ai-chat { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .ai-message { max-width: 85%; padding: 15px 18px; border-radius: 20px; line-height: 1.7; animation: fadeIn 0.4s ease-out; position: relative; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .ai-message.user { align-self: flex-end; background: linear-gradient(135deg, var(--ai) 0%, #7b1fa2 100%); color: white; border-bottom-right-radius: 5px; }
+        .ai-message.bot { align-self: flex-start; background: white; color: var(--text); border-bottom-left-radius: 5px; border: 1px solid #e0e0e0; box-shadow: 0 3px 10px rgba(0,0,0,0.08); }
+        .ai-message.bot::before { content: '🤖 باسم: '; font-weight: bold; color: var(--ai); }
+        .message-time { font-size: 0.7rem; opacity: 0.6; margin-top: 8px; text-align: left; }
+        .ai-message.user .message-time { text-align: right; color: rgba(255,255,255,0.8); }
+        .ai-typing { display: none; align-items: center; gap: 8px; padding: 15px 20px; color: var(--ai); font-size: 14px; font-weight: 500; }
+        .ai-typing.active { display: flex; }
+        .typing-indicator { display: flex; gap: 4px; }
+        .typing-dot { width: 8px; height: 8px; background: var(--ai); border-radius: 50%; animation: typing 1.4s infinite; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-10px); } }
+        .ai-input-area { padding: 20px; background: white; border-top: 2px solid rgba(156, 39, 176, 0.1); }
+        .ai-input-container { display: flex; gap: 10px; margin-bottom: 12px; }
+        .ai-input { flex: 1; padding: 14px 20px; border: 2px solid #e0e0e0; border-radius: 30px; font-size: 14px; outline: none; transition: all 0.3s; background: var(--card); color: var(--text); }
+        .ai-input:focus { border-color: var(--ai); box-shadow: 0 0 0 4px rgba(156, 39, 176, 0.1); }
+        .ai-send-btn { padding: 14px 28px; background: linear-gradient(135deg, var(--ai) 0%, #7b1fa2 100%); color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; font-size: 14px; transition: all 0.3s; display: flex; align-items: center; gap: 8px; }
+        .ai-send-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(156, 39, 176, 0.4); }
+        .ai-send-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .quick-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        .quick-action { padding: 8px 16px; background: #f5f5f5; border: 1px solid #ddd; border-radius: 20px; cursor: pointer; font-size: 12px; transition: all 0.3s; color: #666; }
+        .quick-action:hover { background: var(--ai); color: white; border-color: var(--ai); }
 
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            animation: confetti-fall 3s linear forwards;
-        }
+        .notification { position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: #fff; padding: 15px 25px; border-radius: var(--radius); box-shadow: var(--shadow); animation: slideIn 0.5s; z-index: 1000; max-width: 300px; }
+        .hidden { display: none !important; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(100px); } to { opacity: 1; transform: translateX(0); } }
 
-        @keyframes confetti-fall {
-            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-        }
+        footer { text-align: center; padding: 20px; background: var(--card); color: #666; margin-top: 20px; box-shadow: 0 -2px 8px rgba(0,0,0,.05); }
 
         @media (max-width: 600px) {
             .ai-container { height: 550px; }
-            .ai-message { max-width: 90%; }
-            .ai-suggestions { padding: 10px; }
-            .ai-suggestion { padding: 6px 12px; font-size: 11px; }
+            .timer-inputs { flex-direction: column; align-items: center; }
+            .timer-display { font-size: 2.5rem; }
+            .notes-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .sticky-note { aspect-ratio: 1; }
+            .garden-stats { top: 60px; gap: 10px; }
+            .garden-stat { padding: 6px 12px; font-size: 0.8rem; }
+        }
+
+        @media (max-width: 400px) {
+            .notes-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <!-- شريط التنقل -->
     <nav class="navbar">
         <button class="nav-btn active" onclick="showPage('home')">الرئيسية</button>
         <button class="nav-btn" onclick="showPage('timer')">المؤقت 🌳</button>
+        <button class="nav-btn" onclick="showPage('shop')">متجر الأشجار 🛒</button>
+        <button class="nav-btn" onclick="showPage('faq')">أسئلة شائعة ❓</button>
         <button class="nav-btn" onclick="showPage('notes')">المفكرة 📝</button>
         <button class="nav-btn ai-btn" onclick="showPage('ai')">باسم AI 🤖</button>
     </nav>
 
     <button id="langToggle" class="lang-btn">EN</button>
+    <button id="darkModeToggle" class="dark-mode-btn" onclick="toggleDarkMode()">🌙</button>
 
     <header>
         <h1>مذاكرتي</h1>
@@ -857,26 +1119,14 @@
     </header>
 
     <div class="container">
-        
         <!-- الصفحة الرئيسية -->
         <div id="home" class="page active">
             <div class="stats-grid">
-                <div class="stat-box">
-                    <div class="stat-number" id="totalSubjects">0</div>
-                    <div class="stat-label">مواد اليوم</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number" id="totalNotes">0</div>
-                    <div class="stat-label">ملاحظاتك</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number" id="totalTrees">0</div>
-                    <div class="stat-label">أشجارك 🌳</div>
-                </div>
-                <div class="stat-box" style="background: linear-gradient(135deg, var(--ai) 0%, #7b1fa2 100%);">
-                    <div class="stat-number" id="aiQuestions">0</div>
-                    <div class="stat-label">محادثات AI 🤖</div>
-                </div>
+                <div class="stat-box"><div class="stat-number" id="totalSubjects">0</div><div class="stat-label">مواد اليوم</div></div>
+                <div class="stat-box"><div class="stat-number" id="totalNotes">0</div><div class="stat-label">ملاحظاتك</div></div>
+                <div class="stat-box"><div class="stat-number" id="totalTrees">0</div><div class="stat-label">أشجارك 🌳</div></div>
+                <div class="stat-box" style="background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); color: #333;"><div class="stat-number" id="userPointsDisplay">0</div><div class="stat-label">نقاطك ⭐</div></div>
+                <div class="stat-box" style="background: linear-gradient(135deg, var(--ai) 0%, #7b1fa2 100%);"><div class="stat-number" id="aiQuestions">0</div><div class="stat-label">محادثات AI 🤖</div></div>
             </div>
 
             <section class="card">
@@ -885,6 +1135,7 @@
                     <table id="scheduleTable">
                         <thead>
                             <tr>
+                                <th>إكمال</th>
                                 <th>المادة</th>
                                 <th>الوقت</th>
                                 <th>الملاحظات</th>
@@ -907,33 +1158,62 @@
         <div id="timer" class="page">
             <section class="card timer-box">
                 <h2>مؤقّت المذاكرة الذكي</h2>
-                <div class="timer-display" id="timerDisplay">25:00</div>
+                
+                <div class="points-display">
+                    ⭐ نقاطك: <span id="timerPoints">0</span> | 
+                    💰 اجمع النقاط واشترِ أشجاراً!
+                </div>
+
+                <div class="timer-inputs">
+                    <div class="timer-input-group">
+                        <label>ساعات</label>
+                        <input type="number" id="hoursInput" min="0" max="23" value="0">
+                    </div>
+                    <div class="timer-input-group">
+                        <label>دقائق</label>
+                        <input type="number" id="minutesInput" min="0" max="59" value="25">
+                    </div>
+                    <div class="timer-input-group">
+                        <label>ثواني</label>
+                        <input type="number" id="secondsInput" min="0" max="59" value="0">
+                    </div>
+                </div>
+
+                <div class="timer-display" id="timerDisplay">00:25:00</div>
                 <div class="timer-progress">
                     <div class="timer-progress-bar" id="timerProgress" style="width: 100%"></div>
                 </div>
                 <div class="timer-buttons">
-                    <button id="startStudy" class="btn btn-primary">🎯 مذاكرة (25 د)</button>
-                    <button id="startBreak" class="btn btn-secondary">☕ استراحة (5 د)</button>
-                    <button id="startLongBreak" class="btn btn-warning">🌟 استراحة طويلة (15 د)</button>
-                    <button id="resetTimer" class="btn btn-danger">⏹ إيقاف</button>
+                    <button id="startTimer" class="btn btn-success">▶️ بدء</button>
+                    <button id="pauseTimer" class="btn btn-warning" style="display:none;">⏸ إيقاف مؤقت</button>
+                    <button id="resetTimer" class="btn btn-danger">🔄 إعادة ضبط</button>
                 </div>
                 <div style="margin-top: 20px; text-align: center; color: #666; font-size: 0.9rem;">
-                    الجلسات الناجحة: <strong id="sessionCount">0</strong> | 
-                    الشجرة القادمة بعد: <strong id="treesNeeded">1</strong> جلسة
+                    💡 كل دقيقة مذاكرة = 1 نقطة! اجمع النقاط واشترِ أشجاراً جميلة!
                 </div>
             </section>
 
+            <!-- الحديقة الواقعية المنظمة -->
             <section class="card garden-container">
-                <div class="sun"></div>
-                <div class="cloud cloud1"></div>
-                <div class="cloud cloud2"></div>
+                <div class="sky">
+                    <div class="sun"></div>
+                    <div class="cloud cloud1"></div>
+                    <div class="cloud cloud2"></div>
+                </div>
+                
                 <h2 class="garden-title">🌳 حديقة مذاكرتي</h2>
+                
                 <div class="garden-stats">
                     <div class="garden-stat">🌳 الأشجار: <span id="gardenTreeCount">0</span></div>
                     <div class="garden-stat">⏱️ الدقائق: <span id="totalStudyMinutes">0</span></div>
                     <div class="garden-stat">🔥 السلسلة: <span id="gardenStreak">1</span></div>
                 </div>
+
                 <div class="garden-ground" id="gardenGround">
+                    <div class="grass-hill"></div>
+                    <div class="grass-hill"></div>
+                    <div class="grass-layer"></div>
+                    
                     <div class="empty-garden" id="emptyGarden">
                         <div class="empty-garden-icon">🌱</div>
                         <div>ابدأ المذاكرة لزراعة أول شجرة!</div>
@@ -942,35 +1222,73 @@
             </section>
         </div>
 
-        <!-- صفحة المفكرة -->
-        <div id="notes" class="page">
+        <!-- صفحة المتجر -->
+        <div id="shop" class="page">
             <section class="card">
-                <h2>📝 مفكرتي</h2>
-                <div class="note-color-picker">
-                    <span>لون الملاحظة:</span>
-                    <div class="color-option selected" style="background: #fffef0" data-color="#fffef0" onclick="selectColor(this)"></div>
-                    <div class="color-option" style="background: #ffe0e0" data-color="#ffe0e0" onclick="selectColor(this)"></div>
-                    <div class="color-option" style="background: #e0f7fa" data-color="#e0f7fa" onclick="selectColor(this)"></div>
-                    <div class="color-option" style="background: #f3e5f5" data-color="#f3e5f5" onclick="selectColor(this)"></div>
-                    <div class="color-option" style="background: #e8f5e9" data-color="#e8f5e9" onclick="selectColor(this)"></div>
+                <h2>🛒 متجر الأشجار</h2>
+                <div class="points-display" style="font-size: 1.5rem;">
+                    ⭐ نقاطك الحالية: <span id="shopPoints">0</span>
                 </div>
-                <textarea id="noteInput" class="note-input" placeholder="اكتب ملاحظتك هنا..."></textarea>
-                <button onclick="addNote()" class="btn btn-primary">💾 حفظ الملاحظة</button>
+                <p style="text-align: center; margin: 15px 0; color: #666;">
+                    اجمع النقاط من المؤقت واشترِ أشجاراً لحديقتك! كل شجرة تظهر في حديقتك الخاصة.
+                </p>
+                <div class="shop-grid" id="shopGrid"></div>
             </section>
+        </div>
+
+        <!-- صفحة الأسئلة الشائعة -->
+        <div id="faq" class="page">
             <section class="card">
-                <h2>ملاحظاتي السابقة</h2>
-                <div id="notesContainer" class="notes-container">
-                    <div class="empty-state">لا توجد ملاحظات بعد</div>
+                <h2>❓ أهم 20 سؤال من الشائعات في تالتة ثانوي</h2>
+                <div id="faqContainer"></div>
+            </section>
+        </div>
+
+        <!-- ==================== المفكرة بأوراق مربعة صغيرة ==================== -->
+        <div id="notes" class="page">
+            <div class="notes-header">
+                <h2>📝 مفكرتي الذكية</h2>
+                <p>دون أفكارك في أوراق ملونة مربعة</p>
+            </div>
+
+            <section class="add-note-section">
+                <textarea 
+                    id="noteInput" 
+                    class="note-input" 
+                    placeholder="✍️ اكتب ملاحظتك هنا..."
+                ></textarea>
+
+                <div class="color-picker-title">اختر لون الورقة:</div>
+                <div class="note-colors">
+                    <div class="color-btn color-red selected" onclick="selectNoteColor(this, 'red')" title="أحمر"></div>
+                    <div class="color-btn color-purple" onclick="selectNoteColor(this, 'purple')" title="بنفسجي"></div>
+                    <div class="color-btn color-teal" onclick="selectNoteColor(this, 'teal')" title="تركواز"></div>
+                    <div class="color-btn color-pink" onclick="selectNoteColor(this, 'pink')" title="وردي"></div>
+                    <div class="color-btn color-yellow" onclick="selectNoteColor(this, 'yellow')" title="أصفر"></div>
+                    <div class="color-btn color-blue" onclick="selectNoteColor(this, 'blue')" title="أزرق"></div>
+                    <div class="color-btn color-green" onclick="selectNoteColor(this, 'green')" title="أخضر"></div>
+                    <div class="color-btn color-orange" onclick="selectNoteColor(this, 'orange')" title="برتقالي"></div>
+                </div>
+
+                <button onclick="addStickyNote()" class="add-note-btn">
+                    <span>📌</span> إضافة الملاحظة
+                </button>
+            </section>
+
+            <section class="card" style="background: transparent; box-shadow: none; padding: 0;">
+                <h2 style="text-align: center; color: #4a5568; margin-bottom: 20px;">📋 ملاحظاتي المعلقة</h2>
+                <div id="notesGrid" class="notes-grid"></div>
+                <div id="emptyNotes" class="empty-notes">
+                    <div class="empty-notes-icon">📭</div>
+                    <div class="empty-notes-text">لا توجد ملاحظات بعد... ابدأ بإضافة أول ملاحظة!</div>
                 </div>
             </section>
         </div>
 
-        <!-- ========== باسم AI المتقدم ========== -->
+        <!-- باسم AI -->
         <div id="ai" class="page">
             <section class="card" style="padding: 0; overflow: hidden;">
                 <div class="ai-container">
-                    
-                    <!-- 🎓 الهيدر المتقدم -->
                     <div class="ai-header">
                         <div class="ai-avatar">🎓</div>
                         <h3>باسم - مساعدك الدراسي الذكي</h3>
@@ -980,12 +1298,8 @@
                         </div>
                     </div>
 
-                    <!-- 💡 تلميح سياقي -->
-                    <div class="ai-context" id="aiContext">
-                        💡 تلميح: يمكنني مساعدتك في المذاكرة، التحفيز، الصحة، الدين، وحتى الدردشة العامة!
-                    </div>
+                    <div class="ai-context">💡 تلميح: يمكنني مساعدتك في المذاكرة، التحفيز، الصحة، الدين، وحتى الدردشة العامة!</div>
 
-                    <!-- 🎯 اقتراحات ذكية -->
                     <div class="ai-suggestions">
                         <button class="ai-suggestion" onclick="sendSuggestion('مرحبا باسم، كيف حالك؟')">👋 تحية</button>
                         <button class="ai-suggestion" onclick="sendSuggestion('عندي اختبار قريب وخايف')">😰 خوف من الامتحان</button>
@@ -995,12 +1309,8 @@
                         <button class="ai-suggestion" onclick="sendSuggestion('احكي لي نكتة')">😂 ترفيه</button>
                     </div>
 
-                    <!-- 💬 منطقة المحادثة -->
-                    <div class="ai-chat" id="aiChat">
-                        <!-- الرسائل تضاف هنا ديناميكياً -->
-                    </div>
+                    <div class="ai-chat" id="aiChat"></div>
 
-                    <!-- ⏳ مؤشر الكتابة -->
                     <div class="ai-typing" id="aiTyping">
                         <span>باسم يفكر</span>
                         <div class="typing-indicator">
@@ -1010,18 +1320,14 @@
                         </div>
                     </div>
 
-                    <!-- ⌨️ منطقة الإدخال -->
                     <div class="ai-input-area">
                         <div class="ai-input-container">
-                            <input type="text" id="aiInput" class="ai-input" 
-                                placeholder="اكتب رسالتك لباسم..." 
-                                onkeypress="handleKeyPress(event)">
+                            <input type="text" id="aiInput" class="ai-input" placeholder="اكتب رسالتك لباسم..." onkeypress="handleKeyPress(event)">
                             <button onclick="sendMessage()" class="ai-send-btn" id="aiSendBtn">
                                 <span>إرسال</span> 📤
                             </button>
                         </div>
                         
-                        <!-- 🛠️ أدوات سريعة -->
                         <div class="quick-actions">
                             <button class="quick-action" onclick="clearChat()">🗑️ مسح المحادثة</button>
                             <button class="quick-action" onclick="saveChat()">💾 حفظ المحادثة</button>
@@ -1031,162 +1337,151 @@
                 </div>
             </section>
         </div>
+    </div>
 
+    <div class="overlay" id="overlay" onclick="closeMotivation()"></div>
+    <div class="motivation-popup" id="motivationPopup">
+        <h3>🎉 أحسنت!</h3>
+        <p id="motivationText"></p>
+        <button class="close-btn" onclick="closeMotivation()">متابعة</button>
     </div>
 
     <div id="notification" class="notification hidden"></div>
-    <div id="celebration" class="celebration hidden"></div>
 
     <footer>
         <p>تم صنع هذا الموقع من الطالب باسم</p>
     </footer>
 
     <script>
-        // ==================== المتغيرات ====================
-        let lang = 'ar';
+        // المتغيرات
         let timerInterval = null;
         let seconds = 25 * 60;
         let isRunning = false;
+        let isPaused = false;
         let totalSeconds = 25 * 60;
-        let selectedNoteColor = '#fffef0';
-        let sessionsForNextTree = 0;
+        let selectedNoteColor = 'red';
+        let userPoints = parseInt(localStorage.getItem('userPoints') || '0');
         let aiQuestionCount = parseInt(localStorage.getItem('aiQuestions') || '0');
         let conversationHistory = [];
         let userName = localStorage.getItem('userName') || '';
+        let plantedTrees = JSON.parse(localStorage.getItem('plantedTrees') || '[]');
 
-        // ==================== شخصية باسم AI ====================
+        // ألوان الملاحظات
+        const noteColors = {
+            red: { class: 'note-red', name: 'أحمر' },
+            purple: { class: 'note-purple', name: 'بنفسجي' },
+            teal: { class: 'note-teal', name: 'تركواز' },
+            pink: { class: 'note-pink', name: 'وردي' },
+            yellow: { class: 'note-yellow', name: 'أصفر' },
+            blue: { class: 'note-blue', name: 'أزرق' },
+            green: { class: 'note-green', name: 'أخضر' },
+            orange: { class: 'note-orange', name: 'برتقالي' }
+        };
+
+        // بيانات المتجر
+        const treeShop = [
+            { id: 1, icon: '🌲', name: 'شجرة الصنوبر', cost: 30, description: 'شجرة خضراء جميلة', type: 'pine' },
+            { id: 2, icon: '🌳', name: 'شجرة البلوط', cost: 50, description: 'شجرة قوية وكبيرة', type: 'normal' },
+            { id: 3, icon: '🌴', name: 'نخلة', cost: 80, description: 'نخلة استوائية رائعة', type: 'palm' },
+            { id: 4, icon: '🎄', name: 'شجرة عيد الميلاد', cost: 100, description: 'شجرة مميزة وجميلة', type: 'pine' },
+            { id: 5, icon: '🌵', name: 'صبار', cost: 60, description: 'نبات صبار صحراوي', type: 'cactus' },
+            { id: 6, icon: '🌸', name: 'شجرة الكرز', cost: 150, description: 'شجرة وردية رائعة', type: 'normal' },
+            { id: 7, icon: '🌺', name: 'شجرة الهيبسكوس', cost: 200, description: 'أزهار حمراء جميلة', type: 'normal' },
+            { id: 8, icon: '🌻', name: 'عباد الشمس', cost: 120, description: 'زهرة مشمسة مبهجة', type: 'normal' }
+        ];
+
+        // الأسئلة الشائعة
+        const faqData = [
+            { q: "هل ممكن أغير شعبة بعد ما بدأت الدراسة؟", a: "نعم، يمكن تغيير الشعبة في أول أسبوعين من بداية العام الدراسي، لكن يحتاج موافقة إدارة المدرسة وتوفر مكان في الشعبة المراد الانتقال إليها." },
+            { q: "الرياضيات صعبة، هل أقدر أنجح فيها؟", a: "بالتأكيد! الرياضيات تحتاج ممارسة يومية وليس ذكاء خارق. حل مسائل يومياً حتى لو قليلة، ولا تخف من الخطأ - كل خطأ هو خطوة للتعلم." },
+            { q: "هل المجموعات ضرورية للنجاح؟", a: "المجموعات مفيدة لكنها ليست ضرورية. بعض الطلاب يفضلون الدراسة الفردية. اختر ما يناسبك، المهم الاستمرارية والفهم." },
+            { q: "كيف أذاكر وأنا مشغول بمواقع التواصل؟", a: "استخدم تقنية البومودورو (25 دقيقة تركيز + 5 دقائق راحة). ضع هاتفك في وضع الطيران أو بعيداً عنك أثناء المذاكرة." },
+            { q: "هل النوم مهم قبل الامتحان؟", a: "النوم ضروري جداً! الدماغ يحتاج 7-8 ساعات لترتيب المعلومات. السهر يؤدي للنسيان والتوتر." },
+            { q: "ماذا أفعل لو أحسست بضغط نفسي؟", a: "تكلم مع شخص تثق به، مارس رياضة خفيفة، خذ نفس عميق، ولا تتردد في طلب المساعدة من مرشد أو طبيب نفسي." },
+            { q: "هل المذاكرة في الصباح أفضل أم في الليل؟", a: "هذا يختلف من شخص لآخر. جرب كلا الوقتين واكتشف متى تركيزك يكون أفضل. معظم الناس يكون تركيزهم أعلى في الصباح." },
+            { q: "كيف أحفظ المعلومات بسرعة؟", a: "استخدم خرائط الذهنية، اشرح المعلومة لشخص آخر، ربطها بأشياء تعرفها، وراجعها بعد يوم وأسبوع وشهر." },
+            { q: "هل الامتحانات التجريبية مهمة؟", a: "نعم جداً! تعطيك فكرة عن مستواك وتعوّدك على ضغط الامتحان. حلل أخطاءك فيها ولا تركز فقط على الدرجة." },
+            { q: "ماذا لو رسبت في امتحان؟", a: "الرسوب ليس نهاية العالم! حلل أسبابه، تعلم منه، واستمر. كثير من الناجحين مرّوا بسقطات سابقة." },
+            { q: "كيف أختار تخصصي الجامعي؟", a: "فكر في: ماذا تحب؟ ما هو ميولك؟ استشر أهل الاختصاص، واقرأ عن التخصصات. لا تختار فقط بناءً على الظروف المادية." },
+            { q: "هل الثانوية العامة تحدد مستقبلي؟", a: "لا! الثانوية خطوة مهمة لكنها ليست الحاسمة. فيه طرق كثيرة للنجاح: المعاهد، الكليات الخاصة، الدراسة في الخارج، أو حتى العمل الحر." },
+            { q: "كيف أتعامل مع توقعات أهلي العالية؟", a: "تكلم معهم بوضوح عن قدراتك وأهدافك. اشرح أنك تبذل قصارى جهدك. النجاح ليس فقط في الدرجات بل في التطور الشخصي." },
+            { q: "هل الأكل الصحي يؤثر على المذاكرة؟", a: "نعم! تناول سمك، مكسرات، فواكه، وخضروات. تجنب الوجبات السريعة والسكريات الكثيرة التي تسبب الخمول." },
+            { q: "هل الرياضة تضيع وقت المذاكرة؟", a: "عكس ذلك! الرياضة 30 دقيقة يومياً تحسن التركيز وتقلل التوتر وتنشط الدماغ. هي استثمار وليست ضياع وقت." },
+            { q: "ماذا أفعل في يوم الامتحان؟", a: "نام جيداً، تناول إفطار خفيف، وصل مبكراً، خذ نفس عميق، اقرأ الأسئلة كلها أولاً، وابدأ بالسهل." },
+            { q: "كيف أذاكر عندما لا أجد دافعاً؟", a: "اقسم المهام لقطع صغيرة، كافئ نفسك بعد كل إنجاز، تذكر هدفك، غيّر مكان المذاكرة، أو درس مع صديق." },
+            { q: "هل الدروس الخصوصية ضرورية؟", a: "للجميع. بعض الطلاب يحتاجونها، البعض لا. إذا فهمت في المدرسة وتحلل تمارين، قد لا تحتاجها. قرار شخصي." },
+            { q: "ما سر النجاح في الثانوية العامة؟", a: "الاستمرارية + التنظيم + الثقة بالنفس. ذاكر يومياً ولو قليلاً، نظم وقتك، وثق أنك قادر. النجاح رحلة وليس وجهة." }
+        ];
+
+        // جمل تحفيزية
+        const motivationalQuotes = [
+            "🌟 أحسنت! أنت تقترب من هدفك خطوة بخطوة!",
+            "💪 رائع! استمر هكذا وستصل إلى القمة!",
+            "🎯 ممتاز! كل مادة تنهيها هي انتصار جديد!",
+            "🔥 أنت نجم! لا تتوقف الآن، النجاح قريب!",
+            "✨ رائع! ثقتك بنفسك تزداد مع كل إنجاز!",
+            "🚀 استمر! أنت تبني مستقبلك بيديك!",
+            "💫 مذهل! أنت أقوى مما تتخيل!",
+            "🏆 بطل! كل جهد اليوم مكافأة غداً!",
+            "🌈 رائع! الطريق للنجاح يبدأ بخطوة واحدة!",
+            "⭐ أنت الأفضل! استمر في التألق!"
+        ];
+
+        // AI
         const basemAI = {
-            name: 'باسم',
-            mood: 'إيجابي',
             greetings: [
                 "أهلاً وسهلاً! 🌟 أنا باسم، مساعدك الدراسي الشخصي. كيف حالك اليوم؟",
                 "مرحباً! 👋 سعيد بوجودك هنا. شنو اللي يجي في بالك؟",
                 "أهلاً بيك! 🎓 جاهز أساعدك في أي شيء يخص دراستك أو حتى لو بس تحب تتكلم!"
-            ],
-            thinking: [
-                "أفكر في أفضل رد... 🤔",
-                "أحلل سؤالك بعمق... 🧠",
-                "أجهز لك نصيحة مفيدة... ✨"
             ]
         };
 
-        // ==================== قاعدة المعرفة الشاملة ====================
         const knowledgeBase = {
-            // التحيات والتعارف
             'مرحبا|أهلا|سلام|هاي|هلا': {
-                responses: [
-                    "أهلاً وسهلاً! 🌟 أنا باسم، مساعدك الدراسي. كيف حالك اليوم؟",
-                    "مرحباً! 👋 سعيد بوجودك هنا. شنو اللي يجي في بالك؟",
-                    "أهلاً بيك! 🎓 جاهز أساعدك في أي شيء يخص دراستك!"
-                ],
-                followUp: "هل تحب أنادي لك باسمك؟ قول لي اسمك! 😊"
+                responses: ["أهلاً وسهلاً! 🌟 أنا باسم، مساعدك الدراسي. كيف حالك اليوم؟", "مرحباً! 👋 سعيد بوجودك هنا. شنو اللي يجي في بالك؟"]
             },
-            
-            // الأسماء
-            'اسمي|انا اسمي|ناديني|اكلمني باسم': {
+            'اسمي|انا اسمي|ناديني': {
                 action: (msg) => {
                     const name = msg.replace(/(اسمي|انا اسمي|ناديني|اكلمني باسم)/, '').trim();
                     if (name && name.length > 1) {
                         userName = name;
                         localStorage.setItem('userName', userName);
-                        return `🎉 أهلاً يا ${userName}! سعيد بمعرفتك. من اليوم هنادي لك باسمك!`;
+                        return `🎉 أهلاً يا ${userName}! سعيد بمعرفتك.`;
                     }
-                    return "قل لي اسمك الحلو وأنا هنادي لك بيه! 😊";
+                    return "قل لي اسمك الحلو! 😊";
                 }
             },
-
-            // الحال
-            'كيف حالك|شلونك|عامل ايه|اخبارك': {
-                responses: [
-                    "أنا بخير الحمدلله! 🌟 وأهم شيء إنك أنت كيف حالك؟ جاهز للمذاكرة اليوم؟",
-                    "تمام والحمدلله! 💪 بس المهم حالك أنت... تحس بإيجابية وطاقة؟",
-                    "بخير طالما أنت هنا تسأل عني! 😊 خليني أساعدك تكون بأحسن حال!"
-                ]
+            'كيف حالك|شلونك': {
+                responses: ["أنا بخير الحمدلله! 🌟 وأنت كيف حالك؟ جاهز للمذاكرة؟", "تمام والحمدلله! 💪 بس المهم حالك أنت..."]
             },
-
-            // الخوف من الامتحان
-            'خايف|خوف|قلق|توتر|امتحان|اختبار|ناجح|راسب': {
-                responses: [
-                    "خوفك طبيعي جداً! 🫂 حتى الأوائل يخافون. الفرق إنهم يحولون الخوف لطاقة إيجابية.\n\n**جرب:**\n• خذ نفس عميق 10 مرات\n• راجع بذكاء مش بكثرة\n• نام كويس قبل الامتحان\n• ثق بإعدادك!\n\nأنت قادر! 💪",
-                    
-                    "القلق قبل الامتحان = دليل إنك تهتم! 🎯\n\n**لكن لا تخليه يتحكم فيك:**\n• اكتب مخاوفك على ورقة وشقها\n• تخيل نفسك ناجح\n• ركز على اللي تعرفه مش اللي ما تعرفه\n• كل سؤال هو فرصة!\n\nأنا معاك! 🌟"
-                ]
+            'خايف|خوف|قلق|توتر|امتحان': {
+                responses: ["خوفك طبيعي! 🫂 حتى الأوائل يخافون. حول الخوف لطاقة إيجابية. خذ نفس عميق 10 مرات وثق بنفسك! 💪"]
             },
-
-            // فقدان الطاقة
-            'طاقة|كسل|تعب|ملل|ماني قادر|ما ابغا|ماعندي مزاج': {
-                responses: [
-                    "فقدان الطاقة طبيعي! 🔋 حتى البطاريات تحتاج شحن.\n\n**اشحن طاقتك:**\n• نام 20 دقيقة قيلولة\n• اشرب ماء وكل فاكهة\n• تحرك 10 دقائق مشي\n• ابدأ بأسهل مهمة فقط\n\nأول خطوة هي الأصعب، بعدها يجري كل شي! 🚀",
-                    
-                    "أفهمك... أحياناً النفسية تكون تعبانة 😔\n\n**جرب تقنية الـ5 دقائق:**\n• قول لنفسك 'بذاكر 5 دقايق بس'\n• ابدأ وأغلق كل المشتتات\n• غالباً بتستمر بعد الـ5 دقايق!\n\nما في شيء يستاهل ضغط نفسك! 🌸"
-                ]
+            'طاقة|كسل|تعب|ملل': {
+                responses: ["فقدان الطاقة طبيعي! 🔋 نام 20 دقيقة، اشرب ماء، تحرك 10 دقائق. أول خطوة هي الأصعب! 🚀"]
             },
-
-            // الإحباط
-            'فاشل|فشل|يأس|احباط|ما انجح|ما اقدر|عاجز': {
-                responses: [
-                    "أوقف! 🛑 لا تسمي نفسك فاشل!\n\n**أنت إنسان يحاول:**\n• كل ناجح مر بفشل\n• توماس إديسون فشل 1000 مرة\n• الفشل = تعلم = نجاح قادم\n• أنت قادر، بس محتاج وقت\n\nأنا مصدق فيك! 💫",
-                    
-                    "أحساسك مفهوم، بس هو مجرد إحساس مو حقيقة! 🧠\n\n**الحقيقة:**\n• أنت تتعلم وتكبر\n• كل يوم أنت أحسن من الأمس\n• القدرات تتطور بالممارسة\n• ما في حد وصل للنجاح بسهولة\n\nقوم... جرب مرة ثانية! 💪"
-                ]
+            'فاشل|فشل|يأس|احباط': {
+                responses: ["أوقف! 🛑 لا تسمي نفسك فاشل! كل ناجح مر بفشل. أنت قادر، بس محتاج وقت! 💫"]
             },
-
-            // النجاح والتحفيز
-            'نصيحة|نجاح|تحفيز|طموح|هدف|مستقبل|جامعة|تخصص': {
-                responses: [
-                    "نصيحتي الذهبية: 🏆\n\n**الاستمرارية تغلب الذكاء!**\n\n• ذاكر يومياً ولو نصف ساعة\n• لا تنتظر الإلهام، ابدأ بالعمل\n• احتفل بإنجازاتك الصغيرة\n• حيط نفسك بناس إيجابيين\n\nالنجاح رحلة مو وجهة! 🚀",
-                    
-                    "لمستقبلك المشرق: 🎓\n\n**خطط ذكياً:**\n• حدد هدفك بوضوح (تخصص/جامعة)\n• اكتب خطوات صغيرة للوصول\n• راجع خطتك أسبوعياً\n• تكيف مع التغييرات\n\nأنت صانع مستقبلك! ✨"
-                ]
+            'نصيحة|نجاح|تحفيز': {
+                responses: ["نصيحتي الذهبية: 🏆 الاستمرارية تغلب الذكاء! ذاكر يومياً ولو نصف ساعة. النجاح رحلة! 🚀"]
             },
-
-            // الترفيه
-            'نكتة|ضحك|فرفش|ملل|مضحك|ههه': {
-                responses: [
-                    "هههه 😂\n\n**نكتة طالب:**\n\nدكتور: ليش ما جبت الواجب؟\nطالب: كلبي أكله!\nدكتور: وأنت عندك كلب؟\nطالب: لا، لهذا ما جبت الواجب! 😅\n\n\nطيب... رجعنا للمذاكرة؟ 📚😄",
-                    
-                    "هذا يضحك! 🤣\n\nواحد سأل طالب ثانوي:\n- كيف حالك؟\n- تمام... بس ناقصني 3 ساعات نوم، 2 وجبة، و 10 درجات في الرياضيات! 😭\n\nأعرف الشعور! بس كمل، كلها سنة وتعدي! 💪"
-                ]
+            'نكتة|ضحك': {
+                responses: ["هههه 😂 دكتور: ليش ما جبت الواجب؟ طالب: كلبي أكله! دكتور: وأنت عندك كلب؟ طالب: لا، لهذا ما جبت الواجب! 😅"]
             },
-
-            // المذاكرة العملية
-            'مذاكرة|ذاكر|فهم|حفظ|درس|مادة|رياضيات|فيزياء|كيمياء|احياء|عربي|انجليزي': {
-                responses: [
-                    "📚 **دليلك للمذاكرة الذكية:**\n\n**قبل المذاكرة:**\n• نظف مكانك من المشتتات\n• جهز كل أدواتك\n• حدد هدف محدد للجلسة\n\n**أثناء المذاكرة:**\n• 25 دقيقة تركيز + 5 دقائق راحة\n• اكتب ملاحظات بيدك\n• اسأل نفسك 'هل فهمت؟'\n\n**بعد المذاكرة:**\n• راجع بسرعة\n• احل تطبيقات\n• اكافئ نفسك! 🎁",
-                    
-                    "💡 **تقنية فينمان (أفضل طريقة):**\n\n1. ادرس الموضوع بسرعة\n2. اشرحه لنفسك ببساطة\n3. لقيت صعوبة؟ راجع المصدر\n4. بسط أكثر باستخدام أمثلة\n5. علم غيرك!\n\n**إذا قدرت تشرح لطفل، فأنت فاهم!** 🎯"
-                ]
+            'مذاكرة|ذاكر|فهم|حفظ': {
+                responses: ["📚 ذاكر 25 دقيقة + 5 دقائق راحة. اكتب ملاحظات بيدك واسأل نفسك 'هل فهمت؟' 🎯"]
             },
-
-            // النوم والصحة
-            'نوم|صحة|اكل|رياضة|تعب|صداع|مرض': {
-                responses: [
-                    "💤 **النوم = النجاح!**\n\n**لماذا؟**\n• الدماغ يرتب الذكريات أثناء النوم\n• النقص يسبب نسيان وتوتر\n• 7-8 ساعات = أداء أفضل\n\n**نصائح للنوم العميق:**\n• اغلق الشاشة ساعة قبل النوم\n• اقرأ كتاب ورقي\n• حافظ على روتين ثابت\n\nلا تضحي بنومك! 🌙",
-                    
-                    "🥗 **غذاء عقلك:**\n\n**أطعمة تقوي الذاكرة:**\n• السمك (أوميغا 3)\n• المكسرات (جوز، لوز)\n• التوت والعنب\n• البيض والأفوكادو\n\n**تجنب:**\n• السكريات الكثيرة\n• الوجبات السريعة\n• الكافيين بعد الظهر\n\nصحتك = نجاحك! 💪"
-                ]
+            'نوم|صحة|اكل': {
+                responses: ["💤 النوم 7-8 ساعات ضروري! الدماغ يرتب الذكريات أثناء النوم. لا تضحي بنومك! 🌙"]
             },
-
-            // الدين
-            'الله|صلاة|قرآن|دعاء|استخارة|توكل|صبر|شكر': {
-                responses: [
-                    "🤲 **التوكل على الله:**\n\n**قال تعالى:** 'وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ'\n\n**كيف تتوكل:**\n• اجتهد وأنت مطمئن بالنتيجة\n• ادعو الله بالتوفيق\n• اقبل القدر بصدر رحب\n• اشكر على النعم\n\nالله معك! 🌟",
-                    
-                    "📿 **الصلاة والنجاح:**\n\n**فوائد الصلاة للطالب:**\n• تركيز أفضل بعد الوضوء\n• هدوء نفسي وسكينة\n• تنظيم وقتك بالصلوات\n• بركة في الوقت\n\n**اجعل الصلاة استراحتك:**\n• صلي قبل ما تذاكر\n• استغفر بين الفصول\n• ادعو بالتوفيق\n\nالله لا يضيع أجر من أحسن عملاً! 💫"
-                ]
+            'الله|صلاة|قرآن|دعاء': {
+                responses: ["🤲 'وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ'. اجتهد وتوكل على الله! 🌟"]
             },
-
-            // افتراضي
-            default: [
-                "🤔 سؤال ممتاز! دعني أفكر فيه...\n\n**وجهة نظري:**\nكل تجربة دراسية فريدة، والأهم إنك تتعلم منها. جرب تطبيق النصائح اللي ذكرتها، وإذا محتاج توضيح أكتر، أنا هنا!\n\nتقدر تسألني عن أي موضوع تاني! 💬",
-                
-                "💡 **فكرة ذكية:**\n\nجرب تقنية الـ5 دقائق:\n• ابدأ بـ5 دقايق فقط\n• لا تفكر في النتيجة\n• ركز على الخطوة الأولى فقط\n• بعد 5 دقائق، ستجد نفسك مستمراً!\n\nجربها الآن! 🚀",
-                
-                "🌟 **تذكر دائماً:**\n\nالنجاح ليس قدرات خارقة، بل:\n• مثابرة يومية\n• تنظيم وقت ذكي\n• تقبل الأخطاء وتعلم منها\n• عدم المقارنة بالآخرين\n\nأنت فريد ورائع! ✨"
-            ]
+            default: ["🤔 سؤال ممتاز! كل تجربة دراسية فريدة. جرب تطبيق النصائح وأنا هنا للمساعدة! 💬"]
         };
 
-        // ==================== التنقل ====================
+        // التنقل
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -1194,37 +1489,37 @@
             document.getElementById(pageId).classList.add('active');
             
             const buttons = document.querySelectorAll('.nav-btn');
-            if (pageId === 'home') buttons[0].classList.add('active');
-            else if (pageId === 'timer') buttons[1].classList.add('active');
-            else if (pageId === 'notes') buttons[2].classList.add('active');
-            else if (pageId === 'ai') {
-                buttons[3].classList.add('active');
-                if (conversationHistory.length === 0) {
-                    initializeChat();
-                }
-            }
+            const pageIndex = ['home', 'timer', 'shop', 'faq', 'notes', 'ai'].indexOf(pageId);
+            if (pageIndex !== -1) buttons[pageIndex].classList.add('active');
+            
+            if (pageId === 'ai' && conversationHistory.length === 0) initializeChat();
+            if (pageId === 'shop') renderShop();
+            if (pageId === 'faq') renderFAQ();
+            if (pageId === 'notes') loadStickyNotes();
         }
 
-        // ==================== تهيئة المحادثة ====================
+        // الوضع الليلي
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+            document.getElementById('darkModeToggle').textContent = isDark ? '☀️' : '🌙';
+        }
+
+        // AI
         function initializeChat() {
             const chat = document.getElementById('aiChat');
             chat.innerHTML = '';
-            
             const greeting = basemAI.greetings[Math.floor(Math.random() * basemAI.greetings.length)];
             addMessage(greeting, 'bot');
             
             if (!userName) {
-                setTimeout(() => {
-                    addMessage("على فكرة... ما اسمك؟ حاب أعرف عشان أخاطبك بشكل أقرب! 😊", 'bot');
-                }, 800);
+                setTimeout(() => addMessage("ما اسمك؟ حاب أعرف عشان أخاطبك بشكل أقرب! 😊", 'bot'), 800);
             } else {
-                setTimeout(() => {
-                    addMessage(`أهلاً مجدداً يا ${userName}! 🎉 سعيد بعودتك. جاهز نكمل رحلتك الدراسية اليوم؟`, 'bot');
-                }, 800);
+                setTimeout(() => addMessage(`أهلاً مجدداً يا ${userName}! 🎉 جاهز نكمل رحلتك الدراسية؟`, 'bot'), 800);
             }
         }
 
-        // ==================== معالجة الإدخال ====================
         function handleKeyPress(event) {
             if (event.key === 'Enter') {
                 event.preventDefault();
@@ -1237,125 +1532,64 @@
             sendMessage();
         }
 
-        // ==================== إرسال الرسالة ====================
         function sendMessage() {
             const input = document.getElementById('aiInput');
             const message = input.value.trim();
-            const sendBtn = document.getElementById('aiSendBtn');
-            
             if (!message) return;
             
-            console.log('إرسال:', message);
-            
-            // حفظ الاسم إذا كان الرد على سؤال الاسم
-            if (conversationHistory.length > 0 && 
-                conversationHistory[conversationHistory.length - 1].includes('اسمك')) {
-                const extractedName = message.replace(/(انا|اسمي|ناديني|اكلم)/, '').trim();
-                if (extractedName && extractedName.length > 1 && extractedName.length < 20) {
-                    userName = extractedName;
-                    localStorage.setItem('userName', userName);
-                }
-            }
-            
-            // إضافة رسالة المستخدم
             addMessage(message, 'user');
             conversationHistory.push(message);
             input.value = '';
             
-            // إظهار مؤشر الكتابة
             document.getElementById('aiTyping').classList.add('active');
-            sendBtn.disabled = true;
-            
-            // محاكاة التفكير
-            const thinkingTime = 1000 + Math.random() * 1500;
+            document.getElementById('aiSendBtn').disabled = true;
             
             setTimeout(() => {
                 const response = generateSmartResponse(message);
-                
                 document.getElementById('aiTyping').classList.remove('active');
                 addMessage(response, 'bot');
                 conversationHistory.push(response);
+                document.getElementById('aiSendBtn').disabled = false;
                 
-                sendBtn.disabled = false;
-                
-                // تحديث الإحصائيات
                 aiQuestionCount++;
                 localStorage.setItem('aiQuestions', aiQuestionCount);
                 document.getElementById('aiQuestions').textContent = aiQuestionCount;
-                
-            }, thinkingTime);
+            }, 1000 + Math.random() * 1500);
         }
 
-        // ==================== توليد رد ذكي ====================
         function generateSmartResponse(message) {
             const lowerMsg = message.toLowerCase();
             
-            // البحث في قاعدة المعرفة
             for (let pattern in knowledgeBase) {
                 if (pattern === 'default') continue;
-                
                 const keywords = pattern.split('|');
                 for (let keyword of keywords) {
-                    if (lowerMsg.includes(keyword.toLowerCase()) || message.includes(keyword)) {
+                    if (lowerMsg.includes(keyword.toLowerCase())) {
                         const item = knowledgeBase[pattern];
-                        
-                        // إذا كان هناك action (للأوامر الخاصة)
-                        if (item.action) {
-                            return item.action(message);
-                        }
-                        
-                        // اختيار رد عشوائي
+                        if (item.action) return item.action(message);
                         let response = item.responses[Math.floor(Math.random() * item.responses.length)];
-                        
-                        // إضافة اسم المستخدم إذا موجود
-                        if (userName && Math.random() > 0.3) {
-                            const personalStart = `يا ${userName}، `;
-                            response = personalStart + response;
-                        }
-                        
-                        // إضافة followUp إذا موجود
-                        if (item.followUp && Math.random() > 0.5) {
-                            response += '\n\n' + item.followUp;
-                        }
-                        
+                        if (userName && Math.random() > 0.3) response = `يا ${userName}، ` + response;
                         return response;
                     }
                 }
             }
             
-            // رد افتراضي
-            const defaults = knowledgeBase.default;
-            let response = defaults[Math.floor(Math.random() * defaults.length)];
-            
-            if (userName) {
-                response = `يا ${userName}، ` + response;
-            }
-            
+            let response = knowledgeBase.default[0];
+            if (userName) response = `يا ${userName}، ` + response;
             return response;
         }
 
-        // ==================== إضافة رسالة للشات ====================
         function addMessage(text, sender) {
             const chat = document.getElementById('aiChat');
             const msgDiv = document.createElement('div');
             msgDiv.className = `ai-message ${sender}`;
-            
-            // تنسيق النص
-            let formattedText = text
-                .replace(/\*\*(.*?)\*\*/g, '<strong style="color: var(--ai);">$1</strong>')
-                .replace(/\n/g, '<br>');
-            
-            // الوقت
+            let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong style="color: var(--ai);">$1</strong>').replace(/\n/g, '<br>');
             const time = new Date().toLocaleTimeString('ar-EG', {hour: '2-digit', minute: '2-digit'});
-            
             msgDiv.innerHTML = formattedText + `<div class="message-time">${time}</div>`;
             chat.appendChild(msgDiv);
-            
-            // تمرير تلقائي
             chat.scrollTop = chat.scrollHeight;
         }
 
-        // ==================== أدوات المحادثة ====================
         function clearChat() {
             if (confirm('هل تريد مسح المحادثة؟')) {
                 conversationHistory = [];
@@ -1365,50 +1599,393 @@
         }
 
         function saveChat() {
-            let chatText = "محادثة مع باسم AI\n";
-            chatText += "==================\n\n";
-            
+            let chatText = "محادثة مع باسم AI\n==================\n\n";
             for (let i = 0; i < conversationHistory.length; i++) {
-                const isUser = i % 2 === 0;
-                chatText += (isUser ? "أنت: " : "باسم: ") + conversationHistory[i] + "\n\n";
+                chatText += (i % 2 === 0 ? "أنت: " : "باسم: ") + conversationHistory[i] + "\n\n";
             }
-            
             const blob = new Blob([chatText], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
             a.download = `محادثة_باسم_${new Date().toLocaleDateString('ar-EG')}.txt`;
             a.click();
-            
             showNotification('💾 تم حفظ المحادثة');
         }
 
         function showHelp() {
-            const helpText = "🤖 **كيف تستخدم باسم AI:**\n\n" +
-                "• اكتب أي سؤال أو مشاعرك بحرية\n" +
-                "• استخدم الاقتراحات السريعة\n" +
-                "• تكلم معي كأنك تكلم صديق مقرب\n" +
-                "• أسأل عن: مذاكرة، تحفيز، صحة، دين، ترفيه\n" +
-                "• قول لي اسمك عشان أنادي لك بيه!\n\n" +
-                "أنا هنا لدعمك في كل وقت! 💪";
+            addMessage("🤖 اكتب أي سؤال أو مشاعرك بحرية. أسأل عن: مذاكرة، تحفيز، صحة، دين، ترفيه. أنا هنا لدعمك! 💪", 'bot');
+        }
+
+        // ==================== المفكرة بأوراق مربعة ====================
+        function selectNoteColor(btn, color) {
+            document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedNoteColor = color;
+        }
+
+        function addStickyNote() {
+            const input = document.getElementById('noteInput');
+            const text = input.value.trim();
             
-            addMessage(helpText, 'bot');
+            if (!text) {
+                showNotification('⚠️ اكتب ملاحظة أولاً!');
+                return;
+            }
+
+            const notes = JSON.parse(localStorage.getItem('stickyNotes') || '[]');
+            const newNote = {
+                id: Date.now(),
+                text: text,
+                color: selectedNoteColor,
+                date: new Date().toLocaleString('ar-EG', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })
+            };
+            
+            notes.unshift(newNote);
+            localStorage.setItem('stickyNotes', JSON.stringify(notes));
+            
+            input.value = '';
+            loadStickyNotes();
+            updateStats();
+            showNotification('✅ تمت إضافة الملاحظة بنجاح!');
         }
 
-        // ==================== باقي الوظائف ====================
-        function toggleLanguage() {
-            lang = lang === 'ar' ? 'en' : 'ar';
-            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-            document.getElementById('langToggle').textContent = lang === 'ar' ? 'EN' : 'AR';
+        function loadStickyNotes() {
+            const notes = JSON.parse(localStorage.getItem('stickyNotes') || '[]');
+            const grid = document.getElementById('notesGrid');
+            const emptyMsg = document.getElementById('emptyNotes');
+            
+            if (notes.length === 0) {
+                grid.innerHTML = '';
+                emptyMsg.style.display = 'block';
+                return;
+            }
+            
+            emptyMsg.style.display = 'none';
+            grid.innerHTML = notes.map(note => {
+                const colorClass = noteColors[note.color].class;
+                return `
+                    <div class="sticky-note ${colorClass}">
+                        <div class="pin"></div>
+                        <div class="note-content">${escapeHtml(note.text)}</div>
+                        <div class="note-footer">
+                            <span class="note-date">📅 ${note.date}</span>
+                            <button class="note-delete-btn" onclick="deleteStickyNote(${note.id})" title="حذف">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
+        function deleteStickyNote(id) {
+            if (!confirm('هل تريد حذف هذه الملاحظة؟')) return;
+            
+            let notes = JSON.parse(localStorage.getItem('stickyNotes') || '[]');
+            notes = notes.filter(n => n.id !== id);
+            localStorage.setItem('stickyNotes', JSON.stringify(notes));
+            
+            loadStickyNotes();
+            updateStats();
+            showNotification('🗑️ تم حذف الملاحظة');
+        }
+
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;")
+                .replace(/\n/g, '<br>');
+        }
+
+        // المؤقت
+        function updateTimerDisplay() {
+            const hours = Math.floor(seconds / 3600);
+            const mins = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            document.getElementById('timerDisplay').textContent = 
+                `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            document.getElementById('timerProgress').style.width = `${(seconds / totalSeconds) * 100}%`;
+        }
+
+        document.getElementById('startTimer').addEventListener('click', () => {
+            if (isRunning) return;
+            
+            if (!isPaused) {
+                const hours = parseInt(document.getElementById('hoursInput').value) || 0;
+                const minutes = parseInt(document.getElementById('minutesInput').value) || 0;
+                const secs = parseInt(document.getElementById('secondsInput').value) || 0;
+                seconds = (hours * 3600) + (minutes * 60) + secs;
+                totalSeconds = seconds;
+            }
+            
+            isRunning = true;
+            isPaused = false;
+            document.getElementById('startTimer').style.display = 'none';
+            document.getElementById('pauseTimer').style.display = 'inline-block';
+            
+            timerInterval = setInterval(() => {
+                seconds--;
+                updateTimerDisplay();
+                if (seconds <= 0) {
+                    clearInterval(timerInterval);
+                    isRunning = false;
+                    completeSession();
+                }
+            }, 1000);
+        });
+
+        document.getElementById('pauseTimer').addEventListener('click', () => {
+            clearInterval(timerInterval);
+            isRunning = false;
+            isPaused = true;
+            document.getElementById('startTimer').style.display = 'inline-block';
+            document.getElementById('pauseTimer').style.display = 'none';
+            document.getElementById('startTimer').textContent = '▶️ استئناف';
+        });
+
+        document.getElementById('resetTimer').addEventListener('click', () => {
+            clearInterval(timerInterval);
+            isRunning = false;
+            isPaused = false;
+            const hours = parseInt(document.getElementById('hoursInput').value) || 0;
+            const minutes = parseInt(document.getElementById('minutesInput').value) || 0;
+            const secs = parseInt(document.getElementById('secondsInput').value) || 0;
+            seconds = (hours * 3600) + (minutes * 60) + secs;
+            totalSeconds = seconds;
+            updateTimerDisplay();
+            document.getElementById('startTimer').style.display = 'inline-block';
+            document.getElementById('pauseTimer').style.display = 'none';
+            document.getElementById('startTimer').textContent = '▶️ بدء';
+        });
+
+        function completeSession() {
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const totalMinutes = hours * 60 + minutes;
+            
+            const earnedPoints = totalMinutes;
+            userPoints += earnedPoints;
+            localStorage.setItem('userPoints', userPoints);
+            
+            let totalStudyMinutes = parseInt(localStorage.getItem('totalStudyMinutes') || '0') + totalMinutes;
+            localStorage.setItem('totalStudyMinutes', totalStudyMinutes);
+            
+            let sessionCount = parseInt(localStorage.getItem('sessionCount') || '0') + 1;
+            localStorage.setItem('sessionCount', sessionCount);
+            
+            document.getElementById('timerPoints').textContent = userPoints;
+            document.getElementById('userPointsDisplay').textContent = userPoints;
+            document.getElementById('shopPoints').textContent = userPoints;
+            document.getElementById('sessionCount').textContent = sessionCount;
+            document.getElementById('totalStudyMinutes').textContent = totalStudyMinutes;
+            document.getElementById('gardenMinutes').textContent = totalStudyMinutes;
+            
+            document.getElementById('startTimer').style.display = 'inline-block';
+            document.getElementById('pauseTimer').style.display = 'none';
+            document.getElementById('startTimer').textContent = '▶️ بدء';
+            
+            showNotification(`🎉 أحسنت! أكملت ${totalMinutes} دقيقة وربحت ${earnedPoints} نقطة!`);
+            updateStats();
+        }
+
+        // المتجر
+        function renderShop() {
+            const grid = document.getElementById('shopGrid');
+            grid.innerHTML = '';
+            
+            treeShop.forEach(tree => {
+                const isOwned = plantedTrees.some(t => t.id === tree.id);
+                const canAfford = userPoints >= tree.cost;
+                
+                const item = document.createElement('div');
+                item.className = `tree-item ${!canAfford && !isOwned ? 'locked' : ''}`;
+                item.innerHTML = `
+                    <div class="tree-icon">${tree.icon}</div>
+                    <div class="tree-name">${tree.name}</div>
+                    <div style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">${tree.description}</div>
+                    ${isOwned ? 
+                        '<div class="tree-owned">✅ تم الشراء</div>' : 
+                        `<div class="tree-cost">⭐ ${tree.cost}</div>
+                        <button class="btn ${canAfford ? 'btn-success' : 'btn-secondary'}" 
+                            onclick="buyTree(${tree.id})" ${!canAfford ? 'disabled' : ''}>
+                            ${canAfford ? '🛒 شراء' : '❌ النقاط غير كافية'}
+                        </button>`
+                    }
+                `;
+                grid.appendChild(item);
+            });
+        }
+
+        function buyTree(treeId) {
+            const tree = treeShop.find(t => t.id === treeId);
+            if (!tree || userPoints < tree.cost) {
+                showNotification('❌ النقاط غير كافية!');
+                return;
+            }
+            
+            if (plantedTrees.some(t => t.id === treeId)) {
+                showNotification('❌ لقد اشتريت هذه الشجرة مسبقاً!');
+                return;
+            }
+            
+            userPoints -= tree.cost;
+            localStorage.setItem('userPoints', userPoints);
+            
+            const newTree = {
+                ...tree,
+                position: calculateTreePosition(),
+                date: new Date().toLocaleDateString('ar-EG')
+            };
+            plantedTrees.push(newTree);
+            localStorage.setItem('plantedTrees', JSON.stringify(plantedTrees));
+            
+            document.getElementById('timerPoints').textContent = userPoints;
+            document.getElementById('userPointsDisplay').textContent = userPoints;
+            document.getElementById('shopPoints').textContent = userPoints;
+            
+            renderShop();
+            renderGarden();
+            showNotification(`🌳 مبروك! اشتريت ${tree.name} بنجاح!`);
+            updateStats();
+        }
+
+        // حساب موضع الشجرة المنظم
+        function calculateTreePosition() {
+            const treeCount = plantedTrees.length;
+            const maxPerRow = 5;
+            const row = Math.floor(treeCount / maxPerRow);
+            const col = treeCount % maxPerRow;
+            
+            // توزيع منظم على صفوف
+            const baseX = 15 + (col * 17); // 15% بداية، 17% مسافة بين كل شجرة
+            const baseY = 60 + (row * 15); // 60% بداية من الأسفل
+            
+            // إضافة بعض العشوائية الخفيفة للطبيعية
+            const randomX = (Math.random() - 0.5) * 5;
+            const randomY = (Math.random() - 0.5) * 3;
+            
+            return {
+                x: Math.max(10, Math.min(90, baseX + randomX)),
+                y: Math.max(50, Math.min(85, baseY + randomY))
+            };
+        }
+
+        // الحديقة الواقعية المنظمة
+        function renderGarden() {
+            const ground = document.getElementById('gardenGround');
+            const emptyMsg = document.getElementById('emptyGarden');
+            
+            // إزالة الأشجار القديمة فقط (keeping hills and layers)
+            ground.querySelectorAll('.tree').forEach(t => t.remove());
+            
+            if (plantedTrees.length === 0) {
+                emptyMsg.classList.remove('hidden');
+                emptyMsg.style.display = 'block';
+            } else {
+                emptyMsg.style.display = 'none';
+                
+                plantedTrees.forEach((tree, index) => {
+                    const treeEl = document.createElement('div');
+                    treeEl.className = `tree tree-${tree.type} tree-sway`;
+                    treeEl.style.left = `${tree.position.x}%`;
+                    treeEl.style.bottom = `${100 - tree.position.y}%`;
+                    treeEl.style.animationDelay = `${index * 0.2}s`;
+                    treeEl.style.zIndex = Math.floor(tree.position.y);
+                    
+                    // بناء الشجرة حسب النوع
+                    if (tree.type === 'palm') {
+                        treeEl.innerHTML = `
+                            <div class="tree-foliage">
+                                <div class="foliage-layer" style="transform: rotate(-30deg); top: 10px; left: -10px;"></div>
+                                <div class="foliage-layer" style="transform: rotate(-10deg); top: 0px; left: 0px;"></div>
+                                <div class="foliage-layer" style="transform: rotate(10deg); top: 0px; left: 20px;"></div>
+                                <div class="foliage-layer" style="transform: rotate(30deg); top: 10px; left: 30px;"></div>
+                                <div class="foliage-layer" style="transform: rotate(0deg); top: -5px; left: 10px; width: 30px;"></div>
+                            </div>
+                            <div class="tree-trunk"></div>
+                        `;
+                    } else if (tree.type === 'pine') {
+                        treeEl.innerHTML = `
+                            <div class="tree-foliage">
+                                <div class="foliage-layer"></div>
+                                <div class="foliage-layer"></div>
+                                <div class="foliage-layer"></div>
+                            </div>
+                            <div class="tree-trunk" style="height: 30px;"></div>
+                        `;
+                    } else if (tree.type === 'cactus') {
+                        treeEl.innerHTML = `
+                            <div style="position: relative; width: 40px; height: 60px;">
+                                <div style="position: absolute; bottom: 0; left: 15px; width: 10px; height: 40px; background: linear-gradient(to right, #2e7d32, #4caf50, #2e7d32); border-radius: 5px;"></div>
+                                <div style="position: absolute; bottom: 20px; left: 5px; width: 15px; height: 8px; background: linear-gradient(to right, #2e7d32, #4caf50); border-radius: 5px;"></div>
+                                <div style="position: absolute; bottom: 25px; right: 5px; width: 12px; height: 6px; background: linear-gradient(to right, #2e7d32, #4caf50); border-radius: 5px;"></div>
+                            </div>
+                        `;
+                    } else {
+                        // شجرة عادية
+                        treeEl.innerHTML = `
+                            <div class="tree-foliage">
+                                <div class="foliage-layer"></div>
+                                <div class="foliage-layer"></div>
+                                <div class="foliage-layer"></div>
+                            </div>
+                            <div class="tree-trunk"></div>
+                        `;
+                    }
+                    
+                    ground.appendChild(treeEl);
+                });
+            }
+            
+            document.getElementById('gardenTreeCount').textContent = plantedTrees.length;
+            document.getElementById('totalTrees').textContent = plantedTrees.length;
+        }
+
+        // الأسئلة الشائعة
+        function renderFAQ() {
+            const container = document.getElementById('faqContainer');
+            container.innerHTML = '';
+            
+            faqData.forEach((item, index) => {
+                const faqItem = document.createElement('div');
+                faqItem.className = 'faq-item';
+                faqItem.innerHTML = `
+                    <div class="faq-question" onclick="toggleFAQ(${index})">
+                        <span>${index + 1}. ${item.q}</span>
+                        <span class="faq-toggle" id="faq-toggle-${index}">▼</span>
+                    </div>
+                    <div class="faq-answer" id="faq-answer-${index}">
+                        ${item.a}
+                    </div>
+                `;
+                container.appendChild(faqItem);
+            });
+        }
+
+        function toggleFAQ(index) {
+            const answer = document.getElementById(`faq-answer-${index}`);
+            const toggle = document.getElementById(`faq-toggle-${index}`);
+            
+            answer.classList.toggle('show');
+            toggle.classList.toggle('rotate');
+        }
+
+        // الجدول الدراسي
         function addRow() {
             const tbody = document.getElementById('tableBody');
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td><input type="text" placeholder="مثال: الرياضيات"></td>
-                <td><input type="time"></td>
-                <td><textarea placeholder="أهداف اليوم..."></textarea></td>
+                <td><div class="complete-circle" onclick="toggleComplete(this)"></div></td>
+                <td><input type="text" placeholder="مثال: الرياضيات" onchange="saveData()"></td>
+                <td><input type="time" onchange="saveData()"></td>
+                <td><textarea placeholder="أهداف اليوم..." onchange="saveData()"></textarea></td>
                 <td><button class="btn btn-danger" onclick="deleteRow(this)">حذف</button></td>
             `;
             tbody.appendChild(row);
@@ -1424,19 +2001,43 @@
             updateStats();
         }
 
+        function toggleComplete(circle) {
+            circle.classList.toggle('checked');
+            const row = circle.closest('tr');
+            row.classList.toggle('subject-completed');
+            
+            if (circle.classList.contains('checked')) {
+                const quote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+                showMotivation(quote);
+            }
+            
+            saveData();
+        }
+
+        function showMotivation(text) {
+            document.getElementById('motivationText').textContent = text;
+            document.getElementById('overlay').classList.add('show');
+            document.getElementById('motivationPopup').classList.add('show');
+        }
+
+        function closeMotivation() {
+            document.getElementById('overlay').classList.remove('show');
+            document.getElementById('motivationPopup').classList.remove('show');
+        }
+
         function updateEmptyState() {
             const tbody = document.getElementById('tableBody');
-            const emptyState = document.getElementById('emptyState');
-            emptyState.classList.toggle('hidden', tbody.children.length > 0);
+            document.getElementById('emptyState').classList.toggle('hidden', tbody.children.length > 0);
         }
 
         function saveData() {
             const rows = [];
             document.querySelectorAll('#tableBody tr').forEach(row => {
                 rows.push({
-                    subject: row.cells[0].querySelector('input').value,
-                    time: row.cells[1].querySelector('input').value,
-                    notes: row.cells[2].querySelector('textarea').value
+                    completed: row.querySelector('.complete-circle').classList.contains('checked'),
+                    subject: row.cells[1].querySelector('input').value,
+                    time: row.cells[2].querySelector('input').value,
+                    notes: row.cells[3].querySelector('textarea').value
                 });
             });
             localStorage.setItem('scheduleData', JSON.stringify(rows));
@@ -1448,10 +2049,12 @@
             tbody.innerHTML = '';
             data.forEach(item => {
                 const row = document.createElement('tr');
+                if (item.completed) row.classList.add('subject-completed');
                 row.innerHTML = `
-                    <td><input type="text" value="${item.subject || ''}" placeholder="مثال: الرياضيات"></td>
-                    <td><input type="time" value="${item.time || ''}"></td>
-                    <td><textarea placeholder="أهداف اليوم...">${item.notes || ''}</textarea></td>
+                    <td><div class="complete-circle ${item.completed ? 'checked' : ''}" onclick="toggleComplete(this)"></div></td>
+                    <td><input type="text" value="${item.subject || ''}" placeholder="مثال: الرياضيات" onchange="saveData()"></td>
+                    <td><input type="time" value="${item.time || ''}" onchange="saveData()"></td>
+                    <td><textarea placeholder="أهداف اليوم..." onchange="saveData()">${item.notes || ''}</textarea></td>
                     <td><button class="btn btn-danger" onclick="deleteRow(this)">حذف</button></td>
                 `;
                 tbody.appendChild(row);
@@ -1459,155 +2062,15 @@
             updateEmptyState();
         }
 
+        // الإحصائيات والإشعارات
         function updateStats() {
             document.getElementById('totalSubjects').textContent = document.querySelectorAll('#tableBody tr').length;
-            document.getElementById('totalNotes').textContent = JSON.parse(localStorage.getItem('notesData') || '[]').length;
-            document.getElementById('totalTrees').textContent = JSON.parse(localStorage.getItem('gardenData') || '[]').length;
+            document.getElementById('totalNotes').textContent = JSON.parse(localStorage.getItem('stickyNotes') || '[]').length;
+            document.getElementById('totalTrees').textContent = plantedTrees.length;
             document.getElementById('aiQuestions').textContent = aiQuestionCount;
-        }
-
-        function updateTimerDisplay() {
-            const minutes = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            document.getElementById('timerDisplay').textContent = 
-                `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-            document.getElementById('timerProgress').style.width = `${(seconds / totalSeconds) * 100}%`;
-        }
-
-        function startTimer(minutes, type) {
-            if (isRunning) clearInterval(timerInterval);
-            seconds = minutes * 60;
-            totalSeconds = seconds;
-            isRunning = true;
-            updateTimerDisplay();
-            
-            timerInterval = setInterval(() => {
-                seconds--;
-                updateTimerDisplay();
-                if (seconds <= 0) {
-                    clearInterval(timerInterval);
-                    isRunning = false;
-                    if (type === 'study') completeStudySession();
-                    else showNotification(type === 'break' ? '☕ انتهت الاستراحة!' : '🌟 انتهت الاستراحة الطويلة!');
-                }
-            }, 1000);
-        }
-
-        function resetTimer() {
-            clearInterval(timerInterval);
-            isRunning = false;
-            seconds = 25 * 60;
-            totalSeconds = seconds;
-            updateTimerDisplay();
-        }
-
-        function completeStudySession() {
-            let count = parseInt(localStorage.getItem('sessionCount') || '0') + 1;
-            localStorage.setItem('sessionCount', count);
-            document.getElementById('sessionCount').textContent = count;
-            
-            sessionsForNextTree++;
-            document.getElementById('treesNeeded').textContent = Math.max(0, 4 - sessionsForNextTree);
-            
-            if (sessionsForNextTree >= 4) {
-                plantTree();
-                sessionsForNextTree = 0;
-                document.getElementById('treesNeeded').textContent = '4';
-            }
-            
-            let totalMinutes = parseInt(localStorage.getItem('totalStudyMinutes') || '0') + 25;
-            localStorage.setItem('totalStudyMinutes', totalMinutes);
-            document.getElementById('totalStudyMinutes').textContent = totalMinutes;
-            
-            showNotification('🎉 أحسنت! أنهيت جلسة مذاكرة!');
-            updateStats();
-            renderGarden();
-        }
-
-        function plantTree() {
-            const garden = JSON.parse(localStorage.getItem('gardenData') || '[]');
-            garden.push({
-                type: Math.floor(Math.random() * 5),
-                position: Math.random() * 70 + 15,
-                date: new Date().toLocaleDateString('ar-EG'),
-                id: Date.now()
-            });
-            localStorage.setItem('gardenData', JSON.stringify(garden));
-            showNotification('🌳 مبروك! زرعت شجرة جديدة!');
-        }
-
-        function renderGarden() {
-            const garden = JSON.parse(localStorage.getItem('gardenData') || '[]');
-            const ground = document.getElementById('gardenGround');
-            const emptyMsg = document.getElementById('emptyGarden');
-            
-            ground.querySelectorAll('.tree').forEach(t => t.remove());
-            
-            if (garden.length === 0) {
-                emptyMsg.classList.remove('hidden');
-            } else {
-                emptyMsg.classList.add('hidden');
-                const trees = ['🌲', '🌳', '🌴', '🎄', '🌵'];
-                garden.forEach((tree, index) => {
-                    const treeDiv = document.createElement('div');
-                    treeDiv.className = 'tree tree-sway';
-                    treeDiv.style.left = `${tree.position}%`;
-                    treeDiv.style.animationDelay = `${index * 0.3}s`;
-                    treeDiv.style.fontSize = '3rem';
-                    treeDiv.textContent = trees[tree.type] || '🌳';
-                    ground.appendChild(treeDiv);
-                });
-            }
-            document.getElementById('gardenTreeCount').textContent = garden.length;
-        }
-
-        function selectColor(element) {
-            document.querySelectorAll('.color-option').forEach(c => c.classList.remove('selected'));
-            element.classList.add('selected');
-            selectedNoteColor = element.dataset.color;
-        }
-
-        function addNote() {
-            const input = document.getElementById('noteInput');
-            const text = input.value.trim();
-            if (!text) return showNotification('⚠️ اكتب ملاحظة أولاً');
-            
-            const notes = JSON.parse(localStorage.getItem('notesData') || '[]');
-            notes.unshift({
-                id: Date.now(),
-                text: text,
-                color: selectedNoteColor,
-                date: new Date().toLocaleString('ar-EG')
-            });
-            localStorage.setItem('notesData', JSON.stringify(notes));
-            input.value = '';
-            loadNotes();
-            updateStats();
-            showNotification('✅ تم حفظ الملاحظة');
-        }
-
-        function loadNotes() {
-            const notes = JSON.parse(localStorage.getItem('notesData') || '[]');
-            const container = document.getElementById('notesContainer');
-            if (notes.length === 0) {
-                container.innerHTML = '<div class="empty-state">لا توجد ملاحظات بعد</div>';
-                return;
-            }
-            container.innerHTML = notes.map(note => `
-                <div class="note-card" style="background: ${note.color}">
-                    <button class="note-delete" onclick="deleteNote(${note.id})">🗑️</button>
-                    <div class="note-date">${note.date}</div>
-                    <div class="note-text">${note.text.replace(/</g, '&lt;')}</div>
-                </div>
-            `).join('');
-        }
-
-        function deleteNote(id) {
-            let notes = JSON.parse(localStorage.getItem('notesData') || '[]');
-            notes = notes.filter(n => n.id !== id);
-            localStorage.setItem('notesData', JSON.stringify(notes));
-            loadNotes();
-            updateStats();
+            document.getElementById('userPointsDisplay').textContent = userPoints;
+            document.getElementById('timerPoints').textContent = userPoints;
+            document.getElementById('shopPoints').textContent = userPoints;
         }
 
         function showNotification(message) {
@@ -1617,25 +2080,14 @@
             setTimeout(() => notif.classList.add('hidden'), 4000);
         }
 
-        // ==================== التشغيل الأولي ====================
+        // التهيئة
         document.getElementById('addRowBtn').addEventListener('click', addRow);
-        document.getElementById('tableBody').addEventListener('input', saveData);
-        document.getElementById('startStudy').addEventListener('click', () => startTimer(25, 'study'));
-        document.getElementById('startBreak').addEventListener('click', () => startTimer(5, 'break'));
-        document.getElementById('startLongBreak').addEventListener('click', () => startTimer(15, 'longBreak'));
-        document.getElementById('resetTimer').addEventListener('click', resetTimer);
-        document.getElementById('langToggle').addEventListener('click', toggleLanguage);
+        
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            document.getElementById('darkModeToggle').textContent = '☀️';
+        }
 
-        // تحميل البيانات
-        loadData();
-        loadNotes();
-        updateStats();
-        renderGarden();
-        
-        document.getElementById('sessionCount').textContent = localStorage.getItem('sessionCount') || '0';
-        document.getElementById('totalStudyMinutes').textContent = localStorage.getItem('totalStudyMinutes') || '0';
-        document.getElementById('treesNeeded').textContent = 4 - (parseInt(localStorage.getItem('sessionCount') || '0') % 4);
-        
         // اقتباس عشوائي
         const quotes = [
             "النجاح لا يأتي من الراحة، بل من المثابرة.",
@@ -1645,7 +2097,17 @@
             "اصبر تُجبر، واجتهادك لن يضيع سدى."
         ];
         document.getElementById('motivQuote').textContent = quotes[Math.floor(Math.random() * quotes.length)];
+
+        // تحميل البيانات
+        loadData();
+        loadStickyNotes();
+        renderGarden();
+        updateStats();
+        
+        document.getElementById('sessionCount').textContent = localStorage.getItem('sessionCount') || '0';
+        document.getElementById('totalStudyMinutes').textContent = localStorage.getItem('totalStudyMinutes') || '0';
+        document.getElementById('gardenMinutes').textContent = localStorage.getItem('totalStudyMinutes') || '0';
+        updateTimerDisplay();
     </script>
 </body>
 </html>
-غنز
